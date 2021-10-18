@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>snrproj</name>
+	<name>snrprojtest</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -22,9 +22,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>antlr</name>
+			<name>src/antlr4</name>
 			<type>2</type>
-			<location>C:/Users/jonat/eclipse-workspace/ANTLR/target/generated-sources/antlr4</location>
+			<location>C:/Users/jonat/eclipse-workspace/antlr4/target/generated-sources/antlr4</location>
 		</link>
 	</linkedResources>
 </projectDescription>

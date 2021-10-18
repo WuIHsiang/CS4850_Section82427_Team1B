@@ -75,15 +75,21 @@ public class FileOperators {
 		boolean success = false;
 		
 		String content = ta.getText();
-        System.out.println("Java File:\n" + content + "\n\n");
+        //System.out.println("Java File:\n" + content + "\n\n");
         
         ANTLRInputStream input = new ANTLRInputStream(content);
         
-        antlr.JavaLexer lexer = new antlr.JavaLexer(input);
+        antlr4.JavaLexer lexer = new antlr4.JavaLexer(input);
         
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         
-        antlr.JavaParser parser = new antlr.JavaParser(tokens);
+        antlr4.JavaParser parser = new antlr4.JavaParser(tokens);
+        
+        antlr4.JavaTranslator translator = new antlr4.JavaTranslator();
+        
+        // translator.visit(parser.compilationUnit());
+        
+        // translator.visit(parser.classDeclaration());
         
         ParseTree tree = parser.compilationUnit();
         
