@@ -20,13 +20,6 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/antlr4</name>
-			<type>2</type>
-			<location>C:/Users/jonat/eclipse-workspace/antlr4/target/generated-sources/antlr4</location>
-		</link>
-	</linkedResources>
 	<filteredResources>
 		<filter>
 			<id>1634597911136</id>

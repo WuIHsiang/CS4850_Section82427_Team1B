@@ -79,13 +79,13 @@ public class FileOperators {
         
         ANTLRInputStream input = new ANTLRInputStream(content);
         
-        antlr4.JavaLexer lexer = new antlr4.JavaLexer(input);
+        antlr.JavaLexer lexer = new antlr.JavaLexer(input);
         
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         
-        antlr4.JavaParser parser = new antlr4.JavaParser(tokens);
+        antlr.JavaParser parser = new antlr.JavaParser(tokens);
         
-        antlr4.JavaTranslator translator = new antlr4.JavaTranslator();
+        antlr.JavaTranslator translator = new antlr.JavaTranslator();
         
         // translator.visit(parser.compilationUnit());
         
