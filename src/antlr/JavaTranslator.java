@@ -9,29 +9,27 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		return traverseResult;
 	}*/
 	
-	private static class TypeVisitor extends JavaParserBaseVisitor<Class>{
+	private static class PrimaryVisitor extends JavaParserBaseVisitor<String>{
+		private String primary;
 		
+		LiteralVisitor literalVisitor = new LiteralVisitor();
+		
+		public String visitPrimary(JavaParser.PrimaryContext ctx) {
+			if (ctx.getRuleIndex() == 4) {
+				literalVisitor.visitLiteral(ctx.literal());
+			}
+			else
+				primary = ctx.getText();
+		return primary;
+		}
 	}
 	
-    public Void visitCompilationUnit(JavaParser.ClassDeclarationContext ctx) {
-        String comp = ctx.getText();
-
-        System.out.println(comp);
-        return null;
-    }
-
-    public Void visitTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
-        String comp = ctx.getText();
-
-        System.out.println(comp);
-        return null;
-    }
-
-    public Void visitClassDeclaration(JavaParser.ClassDeclarationContext ctx){
-        String className = ctx.getText();
-
-        System.out.println(className);
-
-        return null;
-    }
+	public static class LiteralVisitor extends JavaParserBaseVisitor<String>{
+		 private String literal;
+		 
+		 public String visitLiteral(JavaParser.LiteralContext ctx) {
+			 literal = ctx.getText();
+			 return literal;
+		 }
+	}
 }
