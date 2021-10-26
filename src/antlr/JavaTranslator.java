@@ -10,7 +10,7 @@ public class JavaTranslator extends antlr4.JavaParserBaseVisitor<Void> {
 	}
 	
 	private static class TypeVisitor extends JavaParserBaseVisitor<Class>{
-		
+		//fuck this class
 		}
 	}
 	
