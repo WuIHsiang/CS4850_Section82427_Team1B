@@ -3,17 +3,17 @@ package antlr;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
-	public TypeVisitor parse(JavaParser parser) {
+	/*public TypeVisitor parse(JavaParser parser) {
 		TypeVisitor typeVisitor = new TypeVisitor();
 		Type traverseResult = typeVisitor.visit(parser.compilationUnit());
 		return traverseResult;
-	}
+	}*/
 	
 	private static class TypeVisitor extends JavaParserBaseVisitor<Class>{
 		
 	}
 	
-    /* public Void visitCompilationUnit(JavaParser.ClassDeclarationContext ctx) {
+    public Void visitCompilationUnit(JavaParser.ClassDeclarationContext ctx) {
         String comp = ctx.getText();
 
         System.out.println(comp);
@@ -33,5 +33,5 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
         System.out.println(className);
 
         return null;
-    } */
+    }
 }
