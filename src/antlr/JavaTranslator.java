@@ -2,12 +2,12 @@ package antlr;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 
-public class JavaTranslator extends antlr4.JavaParserBaseVisitor<Void> {
-	public TypeVisitor parse(JavaParser parser) {
+public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
+	/*public TypeVisitor parse(JavaParser parser) {
 		TypeVisitor typeVisitor = new TypeVisitor();
 		Type traverseResult = typeVisitor.visit(parser.compilationUnit());
 		return traverseResult;
-	}
+	}*/
 	
 	private static class TypeVisitor extends JavaParserBaseVisitor<Class>{
 		//fuck this class
@@ -35,4 +35,4 @@ public class JavaTranslator extends antlr4.JavaParserBaseVisitor<Void> {
 
         return null;
     } */
-}//end class
+//end class
