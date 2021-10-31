@@ -143,7 +143,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		ClassOrInterfaceModifierVisitor classorinterfaceVisitor=new ClassOrInterfaceModifierVisitor();
 		
 		public String visitModifier(JavaParser.ModifierContext ctx) {
-			if (ctx.getRuleIndex() == 4) {
+			if (ctx.getRuleIndex() == 5) {
 				classorinterfaceVisitor.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
 			}
 			else
@@ -206,15 +206,92 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		
 		methodBodyVisitor methodbodyVisitor=new methodBodyVisitor();
 		typeTypeorVoidVisitor typeTypeorVoidVisitor=new typeTypeorVoidVisitor();
+		formalParametersVisitor FormalParametersVisitor=new formalParametersVisitor();
 		
 		public String visitmethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 21) {
 				methodbodyVisitor.visitmethodBody(ctx.methodBody());
 			}else if (ctx.getRuleIndex() == 22) {
 				typeTypeorVoidVisitor.visittypeTypeorVoid(ctx.typeTypeOrVoid());
+			}else if (ctx.getRuleIndex() == 42) {
+				FormalParametersVisitor.visitformalParameters(ctx.formalParameters());
 			}else
 				methoddeclaration = ctx.getText();
 		return methoddeclaration;
+		}
+	}
+	private static class formalParametersVisitor extends JavaParserBaseVisitor<String>{
+		private String formalparameters;
+		
+		formalParameterListVisitor FormalParameterListVisitor=new formalParameterListVisitor();
+		
+		public String visitformalParameters(JavaParser.FormalParametersContext ctx) {
+			if (ctx.getRuleIndex() == 43) {
+				FormalParameterListVisitor.visitformalParameterList(ctx.formalParameterList());
+			}
+			else
+				formalparameters = ctx.getText();
+		return formalparameters;
+		}
+	}
+	private static class formalParameterListVisitor extends JavaParserBaseVisitor<String>{
+		private String formalparameterlist;
+		
+		formalParameterVisitor FormalParameterVisitor=new formalParameterVisitor();
+		
+		public String visitformalParameterList(JavaParser.FormalParameterListContext ctx) {
+			if (ctx.getRuleIndex() == 44) {
+				FormalParameterVisitor.visitformalParameter(ctx.formalParameter(0));
+			}
+			else
+				formalparameterlist = ctx.getText();
+		return formalparameterlist;
+		}
+	}
+	private static class formalParameterVisitor extends JavaParserBaseVisitor<String>{
+		private String formalparameter;
+		
+		typeTypeVisitor TypeTypeVisitor=new typeTypeVisitor();
+		VariableDeclaratorIdVisitor variableDeclaratorIdVisitor=new VariableDeclaratorIdVisitor();
+		
+		public String visitformalParameter(JavaParser.FormalParameterContext ctx) {
+			if (ctx.getRuleIndex() == 99) {
+				TypeTypeVisitor.visitTypeType(ctx.typeType());
+			}else if (ctx.getRuleIndex() == 36) {
+				variableDeclaratorIdVisitor.visitVariableDeclaratorId(ctx.variableDeclaratorId());
+			}else
+				formalparameter = ctx.getText();
+		return formalparameter;
+		}
+	}
+	private static class typeTypeVisitor extends JavaParserBaseVisitor<String>{
+		private String typetype;
+		
+		classOrInterfaceTypeVisitor ClassOrInterfaceTypeVisitor=new classOrInterfaceTypeVisitor();
+		
+		public String visitTypeType(JavaParser.TypeTypeContext ctx) {
+			if (ctx.getRuleIndex() == 39) {
+				ClassOrInterfaceTypeVisitor.visitclassOrInterfaceType(ctx.classOrInterfaceType());
+			}
+			else
+				typetype = ctx.getText();
+		return typetype;
+		}
+	}
+	private static class VariableDeclaratorIdVisitor extends JavaParserBaseVisitor<String>{
+		private String variabledeclaratorid;
+		
+		public String visitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
+			variabledeclaratorid = ctx.getText();
+			return variabledeclaratorid;
+		}
+	}
+	private static class classOrInterfaceTypeVisitor extends JavaParserBaseVisitor<String>{
+		private String classorinterfacetype;
+		
+		public String visitclassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
+			classorinterfacetype = ctx.getText();
+			return classorinterfacetype;
 		}
 	}
 	private static class typeTypeorVoidVisitor extends JavaParserBaseVisitor<String>{
