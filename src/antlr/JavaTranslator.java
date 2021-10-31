@@ -43,13 +43,62 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
      
 		return success;
 	}
+	private static class compilationUnitVisitor extends JavaParserBaseVisitor<String>{
+		private String compilationUnit;
+		
+		typeDeclarationVisitor TypeDeclarationVisitor=new typeDeclarationVisitor();
+		importDeclarationVisitor ImportDeclarationVisitor=new importDeclarationVisitor();
+		packageDeclarationVisitor PackageDeclarationVisitor=new packageDeclarationVisitor();
+		
+		public String visitcompilationUnit(JavaParser.CompilationUnitContext ctx) {
+			if (ctx.getRuleIndex() == 3) {
+				TypeDeclarationVisitor.visittypeDeclaration(ctx.typeDeclaration(0));
+			}else if (ctx.getRuleIndex() == 2) {
+				ImportDeclarationVisitor.visitimportDeclaration(ctx.importDeclaration(0));
+			}else if (ctx.getRuleIndex() == 1) {
+				PackageDeclarationVisitor.visitpackageDeclaration(ctx.packageDeclaration());
+			}else
+				compilationUnit = ctx.getText();
+		return compilationUnit;
+		}
+	}
+	private static class importDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String importdeclaration;
+		
+		public String visitimportDeclaration(JavaParser.ImportDeclarationContext ctx) {
+			importdeclaration= ctx.getText();
+			return importdeclaration;
+		}
+	}
+	private static class packageDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String packagedeclaration;
+		
+		public String visitpackageDeclaration(JavaParser.PackageDeclarationContext ctx) {
+			packagedeclaration= ctx.getText();
+			return packagedeclaration;
+		}
+	}
+	private static class typeDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String typedeclaration;
+		
+		classDeclarationVisitor ClassDeclarationVisitor=new classDeclarationVisitor();
+		
+		public String visittypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+			if (ctx.getRuleIndex() == 7) {
+				ClassDeclarationVisitor.visitclassDeclaration(ctx.classDeclaration());
+			}
+			else
+				typedeclaration = ctx.getText();
+		return typedeclaration;
+		}
+	}
 	private static class classDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String classdeclaration;
 		
 		ClassBodyVisitor ClassBodyVisitor=new ClassBodyVisitor();
 		
 		public String visitclassDeclaration(JavaParser.ClassDeclarationContext ctx) {
-			if (ctx.getRuleIndex() == 4) {
+			if (ctx.getRuleIndex() == 16) {
 				ClassBodyVisitor.visitClassBody(ctx.classBody());
 			}
 			else
@@ -63,8 +112,8 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		ClassBodyDeclarationVisitor classBodyDeclarationVisitor=new ClassBodyDeclarationVisitor();
 		
 		public String visitClassBody(JavaParser.ClassBodyContext ctx) {
-			if (ctx.getRuleIndex() == 4) {
-				//classBodyDeclarationVisitor.visitClassBodyDeclaration(ctx.classBodyDeclaration());
+			if (ctx.getRuleIndex() == 18) {
+				classBodyDeclarationVisitor.visitClassBodyDeclaration(ctx.classBodyDeclaration(0));
 			}
 			else
 				classbody = ctx.getText();
@@ -75,10 +124,13 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		private String classbodydeclaration;
 		
 		ModifierVisitor modifierVisitor=new ModifierVisitor();
+		memberDeclarationVisitor memberdeclarationVisitor=new memberDeclarationVisitor();
 		
 		public String visitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 4) {
-				//modifierVisitor.visitModifier(ctx.modifier());
+				modifierVisitor.visitModifier(ctx.modifier(0));
+			}else if (ctx.getRuleIndex() == 19) {
+				memberdeclarationVisitor.visitmemberDeclaration(ctx.memberDeclaration());
 			}
 			else
 				classbodydeclaration = ctx.getText();
@@ -92,44 +144,34 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		
 		public String visitModifier(JavaParser.ModifierContext ctx) {
 			if (ctx.getRuleIndex() == 4) {
-				//classorinterfaceVisitor.visitExpressionList(ctx.classOrInterfaceModifier());
+				classorinterfaceVisitor.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
 			}
 			else
 				modifier = ctx.getText();
 		return modifier;
 		}
 	}
-	private static class ClassOrInterfaceModifierVisitor extends JavaParserBaseVisitor<String>{
+	/*private static class MemberDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String modifier;
 		
-		ExpressionListVisitor expressionListVisitor=new ExpressionListVisitor();
+		ClassOrInterfaceModifierVisitor classorinterfaceVisitor=new ClassOrInterfaceModifierVisitor();
 		
-		public String visitClassOrInterfaceModifier(JavaParser.ModifierContext ctx) {
+		public String visitModifier(JavaParser.ModifierContext ctx) {
 			if (ctx.getRuleIndex() == 4) {
-				//expressionListVisitor.visitExpressionList(ctx.classOrInterfaceModifier());
+				classorinterfaceVisitor.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
 			}
 			else
 				modifier = ctx.getText();
 		return modifier;
 		}
-	}
-	private static class PublicVisitor extends JavaParserBaseVisitor<String>{
-		private String Public;
-		public String visitPublic(JavaParser.ClassOrInterfaceModifierContext ctx) {
-			if(ctx.getText()=="public") {
-				Public = ctx.getText();
-			}
-			return Public;
-		 }
-	}
-	private static class StaticVisitor extends JavaParserBaseVisitor<String>{
-		private String Static;
-		public String visitStatic(JavaParser.ClassOrInterfaceModifierContext ctx) {
-			if(ctx.getText()=="static") {
-				Static = ctx.getText();
-			}
-			return Static;
-		 }
+	}*/
+	private static class ClassOrInterfaceModifierVisitor extends JavaParserBaseVisitor<String>{
+		private String classorinterfacemodifier;
+		
+		public String visitClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
+			classorinterfacemodifier = ctx.getText();
+			return classorinterfacemodifier;
+		}
 	}
 	private static class methodCallVisitor extends JavaParserBaseVisitor<String>{
 		private String methodcall;
@@ -143,6 +185,100 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			else
 				methodcall = ctx.getText();
 		return methodcall;
+		}
+	}
+	private static class memberDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String memberdeclaration;
+		
+		methodDeclarationVisitor methoddeclarationVisitor=new methodDeclarationVisitor();
+		
+		public String visitmemberDeclaration(JavaParser.MemberDeclarationContext ctx) {
+			if (ctx.getRuleIndex() == 20) {
+				methoddeclarationVisitor.visitmethodDeclaration(ctx.methodDeclaration());
+			}
+			else
+				memberdeclaration = ctx.getText();
+		return memberdeclaration;
+		}
+	}
+	private static class methodDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String methoddeclaration;
+		
+		methodBodyVisitor methodbodyVisitor=new methodBodyVisitor();
+		typeTypeorVoidVisitor typeTypeorVoidVisitor=new typeTypeorVoidVisitor();
+		
+		public String visitmethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+			if (ctx.getRuleIndex() == 21) {
+				methodbodyVisitor.visitmethodBody(ctx.methodBody());
+			}else if (ctx.getRuleIndex() == 22) {
+				typeTypeorVoidVisitor.visittypeTypeorVoid(ctx.typeTypeOrVoid());
+			}else
+				methoddeclaration = ctx.getText();
+		return methoddeclaration;
+		}
+	}
+	private static class typeTypeorVoidVisitor extends JavaParserBaseVisitor<String>{
+		private String typetypeorvoid;
+		
+		public String visittypeTypeorVoid(JavaParser.TypeTypeOrVoidContext ctx) {
+				typetypeorvoid = ctx.getText();
+				return typetypeorvoid;
+		}
+	}
+	private static class methodBodyVisitor extends JavaParserBaseVisitor<String>{
+		private String methodbody;
+		
+		BlockVisitor blockVisitor=new BlockVisitor();
+		
+		public String visitmethodBody(JavaParser.MethodBodyContext ctx) {
+			if (ctx.getRuleIndex() == 81) {
+				blockVisitor.visitBlock(ctx.block());
+			}
+			else
+				methodbody = ctx.getText();
+		return methodbody;
+		}
+	}
+	private static class BlockVisitor extends JavaParserBaseVisitor<String>{
+		private String block;
+		
+		BlockStatementVisitor blockstatementVisitor=new BlockStatementVisitor();
+		
+		public String visitBlock(JavaParser.BlockContext ctx) {
+			if (ctx.getRuleIndex() == 65) {
+				blockstatementVisitor.visitBlockStatement(ctx.blockStatement(0));
+			}
+			else
+				block = ctx.getText();
+		return block;
+		}
+	}
+	private static class BlockStatementVisitor extends JavaParserBaseVisitor<String>{
+		private String blockstatement;
+		
+		StatementVisitor statementVisitor=new StatementVisitor();
+		
+		public String visitBlockStatement(JavaParser.BlockStatementContext ctx) {
+			if (ctx.getRuleIndex() == 68) {
+				statementVisitor.visitStatement(ctx.statement());
+			}
+			else
+				blockstatement = ctx.getText();
+		return blockstatement;
+		}
+	}
+	private static class StatementVisitor extends JavaParserBaseVisitor<String>{
+		private String statement;
+		
+		ExpressionVisitor expressionVisitor=new ExpressionVisitor();
+		
+		public String visitStatement(JavaParser.StatementContext ctx) {
+			if (ctx.getRuleIndex() == 83) {
+				expressionVisitor.visitExpression(ctx.expression(0));
+			}
+			else
+				statement = ctx.getText();
+		return statement;
 		}
 	}
 	private static class ExpressionListVisitor extends JavaParserBaseVisitor<String>{
@@ -159,16 +295,24 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		return expressionlist;
 		}
 	}
+	
 	private static class ExpressionVisitor extends JavaParserBaseVisitor<String>{
 		private String expression;
 		
 		PrimaryVisitor primaryVisitor = new PrimaryVisitor();
+		methodCallVisitor methodcallVisitor = new methodCallVisitor();
 		
 		public String visitExpression(JavaParser.ExpressionContext ctx) {
+			if(ctx.expression(0).getText()=="") {
+				return ctx.expression(0).getText();
+			}
 			if (ctx.getRuleIndex() == 87) {
 				primaryVisitor.visitPrimary(ctx.primary());
-			}
-			else
+			}else if(ctx.getRuleIndex()==83) {
+				visitExpression(ctx.expression(0));
+			}else if(ctx.getRuleIndex()==82) {
+				methodcallVisitor.visitmethodCall(ctx.methodCall());
+			}else
 				expression = ctx.getText();
 		return expression;
 		}
