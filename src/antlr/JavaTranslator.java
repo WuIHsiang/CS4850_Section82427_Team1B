@@ -16,11 +16,9 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 	 
 		
 		RULE_typeParameters = 8, RULE_typeParameter = 9, RULE_typeBound = 10, 
-		RULE_enumDeclaration = 11, RULE_enumConstants = 12, RULE_enumConstant = 13, 
 		RULE_enumBodyDeclarations = 14, RULE_genericMethodDeclaration = 23, RULE_genericConstructorDeclaration = 24, 
 		RULE_constructorDeclaration = 25, RULE_fieldDeclaration = 26, RULE_constDeclaration = 29, 
-		RULE_constantDeclarator = 30,  RULE_genericInterfaceMethodDeclaration = 33, RULE_variableInitializer = 37, 
-		RULE_arrayInitializer = 38, RULE_typeArgument = 40, RULE_qualifiedNameList = 41,  
+		RULE_constantDeclarator = 30,  RULE_genericInterfaceMethodDeclaration = 33,  RULE_typeArgument = 40, RULE_qualifiedNameList = 41,  
 		RULE_lastFormalParameter = 45, RULE_qualifiedName = 46,  RULE_altAnnotationQualifiedName = 50, 
 		RULE_annotation = 51, RULE_elementValuePairs = 52, RULE_elementValuePair = 53, 
 		RULE_elementValue = 54, RULE_elementValueArrayInitializer = 55, RULE_annotationTypeDeclaration = 56, 
@@ -34,9 +32,9 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		RULE_lambdaBody = 86,  RULE_classType = 88, RULE_creator = 89, 
 		RULE_createdName = 90, RULE_innerCreator = 91, RULE_arrayCreatorRest = 92, 
 		RULE_classCreatorRest = 93, RULE_explicitGenericInvocation = 94, RULE_typeArgumentsOrDiamond = 95, 
-		RULE_nonWildcardTypeArgumentsOrDiamond = 96, RULE_nonWildcardTypeArguments = 97, 
-		RULE_typeList = 98,   RULE_typeArguments = 101, 
-		RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103, RULE_arguments = 104;
+		RULE_nonWildcardTypeArgumentsOrDiamond = 96, RULE_nonWildcardTypeArguments = 97, RULE_typeList = 98,   
+		RULE_typeArguments = 101, RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103, 
+		RULE_arguments = 104;
 	 */
 	static public boolean translate(TextArea ta) {
 		boolean success = false;
@@ -83,7 +81,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				ImportDeclarationVisitor.visitimportDeclaration(ctx.importDeclaration(0));
 			}if (ctx.getRuleIndex() == 1) {
 				PackageDeclarationVisitor.visitpackageDeclaration(ctx.packageDeclaration());
-			}else
+			}
 				compilationUnit = ctx.getText();
 		return compilationUnit;
 		}
@@ -104,21 +102,59 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			return packagedeclaration;
 		}
 	}
+	
 	private static class typeDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String typedeclaration;
 		
 		classDeclarationVisitor ClassDeclarationVisitor=new classDeclarationVisitor();
 		interfaceDeclarationVisitor InterfaceDeclarationVisitor=new interfaceDeclarationVisitor();
+		EnumDeclarationVisitor enumDeclarationVisitor=new EnumDeclarationVisitor();
 		
 		public String visittypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 7) {
 				ClassDeclarationVisitor.visitclassDeclaration(ctx.classDeclaration());
 			}if (ctx.getRuleIndex() == 15) {
 				InterfaceDeclarationVisitor.visitinterfaceDeclaration(ctx.interfaceDeclaration());
+			}if (ctx.getRuleIndex() == 11) {
+				enumDeclarationVisitor.visitEnumDeclaration(ctx.enumDeclaration());
 			}
-			else
 				typedeclaration = ctx.getText();
 		return typedeclaration;
+		}
+	}
+	private static class EnumDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String enumdeclaration;
+		EnumConstantsVisitor enumConstantsVisitor=new EnumConstantsVisitor();
+		
+		
+		public String visitEnumDeclaration(JavaParser.EnumDeclarationContext ctx) {
+			if(ctx.getRuleIndex()==12) {
+				enumConstantsVisitor.visitEnumConstants(ctx.enumConstants());
+			} 
+				enumdeclaration = ctx.getText();
+		return enumdeclaration;
+		}
+	}
+	private static class EnumConstantsVisitor extends JavaParserBaseVisitor<String>{
+		private String enumconstants;
+		EnumConstantVisitor enumConstantVisitor=new EnumConstantVisitor();
+		
+		
+		public String visitEnumConstants(JavaParser.EnumConstantsContext ctx) {
+			if(ctx.getRuleIndex()==13) {
+				enumConstantVisitor.visitEnumConstant(ctx.enumConstant(0));
+			} 
+				enumconstants = ctx.getText();
+		return enumconstants;
+		}
+	}
+	private static class EnumConstantVisitor extends JavaParserBaseVisitor<String>{
+		private String enumconstant;
+		
+		public String visitEnumConstant(JavaParser.EnumConstantContext ctx) {
+			
+		enumconstant = ctx.getText();
+		return enumconstant;
 		}
 	}
 	private static class classDeclarationVisitor extends JavaParserBaseVisitor<String>{
@@ -131,7 +167,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if (ctx.getRuleIndex() == 16) {
 				
 			}
-			else
+			
 				classdeclaration = ctx.getText();
 		return classdeclaration;
 		}
@@ -145,7 +181,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 18) {
 				classBodyDeclarationVisitor.visitClassBodyDeclaration(ctx.classBodyDeclaration(0));
 			}
-			else
+			
 				classbody = ctx.getText();
 		return classbody;
 		}
@@ -162,7 +198,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if (ctx.getRuleIndex() == 19) {
 				memberdeclarationVisitor.visitmemberDeclaration(ctx.memberDeclaration());
 			}
-			else
+			
 				classbodydeclaration = ctx.getText();
 		return classbodydeclaration;
 		}
@@ -177,7 +213,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 17) {
 				interfaceBodyVisitor.visitInterfaceBody(ctx.interfaceBody());
 			}
-			else
+			
 				classdeclaration = ctx.getText();
 		return classdeclaration;
 		}
@@ -191,7 +227,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 27) {
 				interfaceBodyDeclarationVisitor.visitInterfaceBodyDeclaration(ctx.interfaceBodyDeclaration(0));
 			}
-			else
+			
 				interfacebody = ctx.getText();
 		return interfacebody;
 		}
@@ -209,7 +245,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if(ctx.getRuleIndex() == 28) {
 				InterfaceMemberDeclarationVisitor.visitinterfaceMemberDeclaration(ctx.interfaceMemberDeclaration());
 			}
-			else
+			
 				interfacebodydeclaration = ctx.getText();
 		return interfacebodydeclaration;
 		}
@@ -225,7 +261,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 5) {
 				classorinterfaceVisitor.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
 			}
-			else
+			
 				modifier = ctx.getText();
 		return modifier;
 		}
@@ -248,7 +284,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 81) {
 				expressionListVisitor.visitExpressionList(ctx.expressionList());
 			}
-			else
+			
 				methodcall = ctx.getText();
 		return methodcall;
 		}
@@ -262,7 +298,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 20) {
 				methoddeclarationVisitor.visitmethodDeclaration(ctx.methodDeclaration());
 			}
-			else
+			
 				memberdeclaration = ctx.getText();
 		return memberdeclaration;
 		}
@@ -281,7 +317,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				typeTypeorVoidVisitor.visittypeTypeorVoid(ctx.typeTypeOrVoid());
 			}if (ctx.getRuleIndex() == 42) {
 				FormalParametersVisitor.visitformalParameters(ctx.formalParameters());
-			}else
+			}
 				methoddeclaration = ctx.getText();
 		return methoddeclaration;
 		}
@@ -312,7 +348,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 31) {
 				interfacemethoddeclarationVisitor.visitinterfaceMethodDeclaration(ctx.interfaceMethodDeclaration());
 			}
-			else
+			
 				interfacememberdeclaration = ctx.getText();
 		return interfacememberdeclaration;
 		}
@@ -333,7 +369,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				FormalParametersVisitor.visitformalParameters(ctx.formalParameters());
 			}if (ctx.getRuleIndex() == 32) {
 				interfaceMethodModifierVisitor.visitInterfaceMethodModifier(ctx.interfaceMethodModifier(0));
-			}else
+			}
 				interfacemethoddeclaration = ctx.getText();
 		return interfacemethoddeclaration;
 		}
@@ -347,7 +383,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 43) {
 				FormalParameterListVisitor.visitformalParameterList(ctx.formalParameterList());
 			}
-			else
+			
 				formalparameters = ctx.getText();
 		return formalparameters;
 		}
@@ -361,7 +397,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 44) {
 				FormalParameterVisitor.visitformalParameter(ctx.formalParameter(0));
 			}
-			else
+			
 				formalparameterlist = ctx.getText();
 		return formalparameterlist;
 		}
@@ -377,7 +413,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				TypeTypeVisitor.visitTypeType(ctx.typeType());
 			}if (ctx.getRuleIndex() == 36) {
 				variableDeclaratorIdVisitor.visitVariableDeclaratorId(ctx.variableDeclaratorId());
-			}else
+			}
 				formalparameter = ctx.getText();
 		return formalparameter;
 		}
@@ -394,7 +430,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if(ctx.getRuleIndex()==34) {
 				variableDeclaratorsVisitor.visitVariableDeclarators(ctx.variableDeclarators());
 			}
-			else
+			
 				localvariabledeclaration= ctx.getText();
 				return localvariabledeclaration;
 		}
@@ -412,7 +448,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if (ctx.getRuleIndex()==100) {
 				primitiveTypeVisitor.visitPrimitiveType(ctx.primitiveType());
 			}
-			else
+			
 				typetype = ctx.getText();
 		return typetype;
 		}
@@ -444,7 +480,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visitVariableDeclarators(JavaParser.VariableDeclaratorsContext ctx) {
 			if(ctx.getRuleIndex()==35) {
 				variableDeclaratorVisitor.visitVariableDeclarator(ctx.variableDeclarator(0));
-			}else
+			}
 			variabledeclarators = ctx.getText();
 			return variabledeclarators;
 		}
@@ -460,7 +496,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if(ctx.getRuleIndex()==37) {
 				variableInitializerVisitor.visitVariableInitializer(ctx.variableInitializer());
 			}
-			else
+			
 			variabledeclarator = ctx.getText();
 			return variabledeclarator;
 		}
@@ -505,7 +541,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 81) {
 				blockVisitor.visitBlock(ctx.block());
 			}
-			else
+			
 				methodbody = ctx.getText();
 		return methodbody;
 		}
@@ -519,7 +555,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 65) {
 				blockstatementVisitor.visitBlockStatement(ctx.blockStatement(0));
 			}
-			else
+			
 				block = ctx.getText();
 		return block;
 		}
@@ -536,7 +572,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if (ctx.getRuleIndex() == 66) {
 				localVariableDeclaration.visitLocalVariableDeclaration(ctx.localVariableDeclaration());
 			}
-			else
+			
 				blockstatement = ctx.getText();
 		return blockstatement;
 		}
@@ -550,7 +586,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 83) {
 				expressionVisitor.visitExpression(ctx.expression(0));
 			}
-			else
+			
 				statement = ctx.getText();
 		return statement;
 		}
@@ -564,7 +600,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 83) {
 				expressionVisitor.visitExpression(ctx.expression(0));
 			}
-			else
+			
 				expressionlist = ctx.getText();
 		return expressionlist;
 		}
@@ -586,21 +622,38 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				visitExpression(ctx.expression(0));
 			}if(ctx.getRuleIndex()==82) {
 				methodcallVisitor.visitmethodCall(ctx.methodCall());
-			}else
+			}
 				expression = ctx.getText();
 		return expression;
+		}
+	}
+	private static class ArrayInitializerVisitor extends JavaParserBaseVisitor<String>{
+		private String arrayinitializaer;
+		
+		VariableInitializerVisitor variableInitializerVisitor=new VariableInitializerVisitor();
+		
+		public String visitArrayInitializer(JavaParser.ArrayInitializerContext ctx) {
+			if (ctx.getRuleIndex() == 37) {
+				variableInitializerVisitor.visitVariableInitializer(ctx.variableInitializer(0));
+			}
+			
+				arrayinitializaer = ctx.getText();
+		return arrayinitializaer;
 		}
 	}
 	private static class VariableInitializerVisitor extends JavaParserBaseVisitor<String>{
 		private String variableinitializaer;
 		
 		ExpressionVisitor expressionVisitor=new ExpressionVisitor();
+		ArrayInitializerVisitor arrayInitializerVisitor=new ArrayInitializerVisitor();
 		
 		public String visitVariableInitializer(JavaParser.VariableInitializerContext ctx) {
-			if (ctx.getRuleIndex() == 37) {
+			if (ctx.getRuleIndex() == 83) {
 				expressionVisitor.visitExpression(ctx.expression());
+			}if(ctx.getRuleIndex() == 38) {
+				arrayInitializerVisitor.visitArrayInitializer(ctx.arrayInitializer());
 			}
-			else
+			
 				variableinitializaer = ctx.getText();
 		return variableinitializaer;
 		}
@@ -614,7 +667,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			if (ctx.getRuleIndex() == 47) {
 				literalVisitor.visitLiteral(ctx.literal());
 			}
-			else
+			
 				primary = ctx.getText();
 		return primary;
 		}
@@ -630,7 +683,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				 IntegerLiteralVisitor.visitIntegerLiteral(ctx.integerLiteral());
 			 }if(ctx.getRuleIndex()==49) {
 				 FloatLiteralVisitor.visitFloatLiteral(ctx.floatLiteral());
-			 }else 
+			 } 
 				 literal = ctx.getText();
 				 return literal;
 		}
