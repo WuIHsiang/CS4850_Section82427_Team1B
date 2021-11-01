@@ -12,10 +12,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		Type traverseResult = typeVisitor.visit(parser.compilationUnit());
 		return traverseResult;
 	}*/
-	/*
-	 
-		
-		RULE_typeParameters = 8, RULE_typeParameter = 9, RULE_typeBound = 10, 
+	/*Classes left to implement
 		RULE_enumBodyDeclarations = 14, RULE_genericMethodDeclaration = 23, RULE_genericConstructorDeclaration = 24, 
 		RULE_constructorDeclaration = 25, RULE_fieldDeclaration = 26, RULE_constDeclaration = 29, 
 		RULE_constantDeclarator = 30,  RULE_genericInterfaceMethodDeclaration = 33,  RULE_typeArgument = 40, RULE_qualifiedNameList = 41,  
@@ -29,44 +26,11 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		RULE_resources = 73, RULE_resource = 74, RULE_switchBlockStatementGroup = 75, 
 		RULE_switchLabel = 76, RULE_forControl = 77, RULE_forInit = 78, RULE_enhancedForControl = 79, 
 		RULE_parExpression = 80, RULE_lambdaExpression = 84, RULE_lambdaParameters = 85, 
-		RULE_lambdaBody = 86,  RULE_classType = 88, RULE_creator = 89, 
-		RULE_createdName = 90, RULE_innerCreator = 91, RULE_arrayCreatorRest = 92, 
-		RULE_classCreatorRest = 93, RULE_explicitGenericInvocation = 94, RULE_typeArgumentsOrDiamond = 95, 
+		RULE_lambdaBody = 86,  RULE_classType = 88, RULE_innerCreator = 91, 
+		RULE_arrayCreatorRest = 92,  RULE_explicitGenericInvocation = 94, RULE_typeArgumentsOrDiamond = 95, 
 		RULE_nonWildcardTypeArgumentsOrDiamond = 96, RULE_nonWildcardTypeArguments = 97, RULE_typeList = 98,   
-		RULE_typeArguments = 101, RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103, 
-		RULE_arguments = 104;
+		RULE_typeArguments = 101, RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103
 	 */
-	static public boolean translate(TextArea ta) {
-		boolean success = false;
-		
-		String content = ta.getText();
-        //System.out.println("Java File:\n" + content + "\n\n");
-        
-        ANTLRInputStream input = new ANTLRInputStream(content);
-        
-        antlr.JavaLexer lexer = new antlr.JavaLexer(input);
-        
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        
-        antlr.JavaParser parser = new antlr.JavaParser(tokens);
-        
-        antlr.JavaTranslator translator = new antlr.JavaTranslator();
-        
-        // translator.visit(parser.compilationUnit());
-        
-        // translator.visit(parser.classDeclaration());
-        
-        ParseTree tree = parser.compilationUnit();
-        
-        System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
-        String[] treearr=tree.toStringTree(parser).split("(");
-        for(int i=0;i<treearr.length;i++) {
-        	System.out.println(treearr[i]);
-        }
-      
-     
-		return success;
-	}
 	private static class compilationUnitVisitor extends JavaParserBaseVisitor<String>{
 		private String compilationUnit;
 		
@@ -118,10 +82,12 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}if (ctx.getRuleIndex() == 11) {
 				enumDeclarationVisitor.visitEnumDeclaration(ctx.enumDeclaration());
 			}
-				typedeclaration = ctx.getText();
+			
+		typedeclaration = ctx.getText();
 		return typedeclaration;
 		}
 	}
+	
 	private static class EnumDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String enumdeclaration;
 		EnumConstantsVisitor enumConstantsVisitor=new EnumConstantsVisitor();
@@ -159,13 +125,14 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 	}
 	private static class classDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String classdeclaration;
+		typeParametersVisitor TypeParametersVisitor=new typeParametersVisitor();
 		
 		ClassBodyVisitor ClassBodyVisitor=new ClassBodyVisitor();
 		public String visitclassDeclaration(JavaParser.ClassDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 16) {
 				ClassBodyVisitor.visitClassBody(ctx.classBody());
-			}if (ctx.getRuleIndex() == 16) {
-				
+			}if (ctx.getRuleIndex() == 8) {
+				TypeParametersVisitor.visittypeParameters(ctx.typeParameters());
 			}
 			
 				classdeclaration = ctx.getText();
@@ -201,6 +168,43 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			
 				classbodydeclaration = ctx.getText();
 		return classbodydeclaration;
+		}
+	}
+	private static class typeParametersVisitor extends JavaParserBaseVisitor<String>{
+		private String typeparameters;
+		typeParameterVisitor TypeParameterVisitor=new typeParameterVisitor();
+		
+		public String visittypeParameters(JavaParser.TypeParametersContext ctx) {
+			if(ctx.getRuleIndex()==9) {
+				TypeParameterVisitor.visittypeParameter(ctx.typeParameter(0));
+			}
+		typeparameters = ctx.getText();
+		return typeparameters;
+		}
+	}
+	private static class typeParameterVisitor extends JavaParserBaseVisitor<String>{
+		private String typeparameter;
+		typeBoundVisitor TypeBoundVisitor=new typeBoundVisitor();
+		
+		public String visittypeParameter(JavaParser.TypeParameterContext ctx) {
+			if(ctx.getRuleIndex()==10) {
+				TypeBoundVisitor.visittypeBound(ctx.typeBound());
+			}
+		typeparameter = ctx.getText();
+		return typeparameter;
+		}
+	}
+	private static class typeBoundVisitor extends JavaParserBaseVisitor<String>{
+		private String typebound;
+		
+		classDeclarationVisitor ClassDeclarationVisitor=new classDeclarationVisitor();
+		interfaceDeclarationVisitor InterfaceDeclarationVisitor=new interfaceDeclarationVisitor();
+		EnumDeclarationVisitor enumDeclarationVisitor=new EnumDeclarationVisitor();
+		
+		public String visittypeBound(JavaParser.TypeBoundContext ctx) {
+			
+		typebound = ctx.getText();
+		return typebound;
 		}
 	}
 	private static class interfaceDeclarationVisitor extends JavaParserBaseVisitor<String>{
@@ -611,17 +615,19 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		
 		PrimaryVisitor primaryVisitor = new PrimaryVisitor();
 		methodCallVisitor methodcallVisitor = new methodCallVisitor();
+		CreatorVisitor creatorVisitor=new CreatorVisitor();
 		
 		public String visitExpression(JavaParser.ExpressionContext ctx) {
 			if(ctx.expression(0).getText()=="") {
 				return ctx.expression(0).getText();
-			}
-			if (ctx.getRuleIndex() == 87) {
+			}if (ctx.getRuleIndex() == 87) {
 				primaryVisitor.visitPrimary(ctx.primary());
 			}if(ctx.getRuleIndex()==83) {
 				visitExpression(ctx.expression(0));
 			}if(ctx.getRuleIndex()==82) {
 				methodcallVisitor.visitmethodCall(ctx.methodCall());
+			}if(ctx.getRuleIndex()==89) {
+				creatorVisitor.visitCreator(ctx.creator());
 			}
 				expression = ctx.getText();
 		return expression;
@@ -657,6 +663,50 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 				variableinitializaer = ctx.getText();
 		return variableinitializaer;
 		}
+	}
+	public static class CreatorVisitor extends JavaParserBaseVisitor<String>{
+		 private String creator;
+		 ClassCreatorRestVisitor classCreatorRestVisitor=new ClassCreatorRestVisitor();
+		 CreatedNameVisitor createdNameVisitor=new CreatedNameVisitor();
+		 
+		 public String visitCreator(JavaParser.CreatorContext ctx) {
+			 if(ctx.getRuleIndex()==93) {
+				 classCreatorRestVisitor.visitClassCreatorRest(ctx.classCreatorRest());
+			 }if(ctx.getRuleIndex()==90) {
+				 createdNameVisitor.visitCreatedName(ctx.createdName());
+			 }
+			 creator = ctx.getText();
+			 return creator;
+		 }
+	}
+	public static class CreatedNameVisitor extends JavaParserBaseVisitor<String>{
+		 private String createdname;
+		 
+		 public String visitCreator(JavaParser.CreatorContext ctx) {
+			 
+			 createdname = ctx.getText();
+			 return createdname;
+		 }
+	}
+	public static class ClassCreatorRestVisitor extends JavaParserBaseVisitor<String>{
+		 private String classcreatorrest;
+		 ArgumentsVisitor argumentsVisitor=new ArgumentsVisitor();
+		 
+		 public String visitClassCreatorRest(JavaParser.ClassCreatorRestContext ctx) {
+			 if(ctx.getRuleIndex()==104) {
+				 argumentsVisitor.visitArguments(ctx.arguments());
+			 }
+			 classcreatorrest = ctx.getText();
+			 return classcreatorrest;
+		 }
+	}
+	public static class ArgumentsVisitor extends JavaParserBaseVisitor<String>{
+		 private String arguments;
+		 
+		 public String visitArguments(JavaParser.ArgumentsContext ctx) {
+			 arguments = ctx.getText();
+			 return arguments;
+		 }
 	}
 	private static class PrimaryVisitor extends JavaParserBaseVisitor<String>{
 		private String primary;

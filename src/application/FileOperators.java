@@ -94,7 +94,10 @@ public class FileOperators {
         ParseTree tree = parser.compilationUnit();
         
         System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
-        
+        String[] treearr=tree.toStringTree(parser).split("(");
+        for(int i=0;i<treearr.length;i++) {
+        	System.out.println(treearr[i]);
+        }
 		return success;
 	}
 }
