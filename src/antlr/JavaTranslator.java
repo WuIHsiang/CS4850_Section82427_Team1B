@@ -15,25 +15,18 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 	/*
 	 
 		
-		RULE_typeParameters = 8, 
-		RULE_typeParameter = 9, RULE_typeBound = 10, RULE_enumDeclaration = 11, 
-		RULE_enumConstants = 12, RULE_enumConstant = 13, RULE_enumBodyDeclarations = 14, 
-		 RULE_genericMethodDeclaration = 23, 
-		RULE_genericConstructorDeclaration = 24, RULE_constructorDeclaration = 25, 
-		RULE_fieldDeclaration = 26,
-		RULE_constDeclaration = 29, RULE_constantDeclarator = 30, RULE_interfaceMethodDeclaration = 31, 
-		RULE_interfaceMethodModifier = 32, RULE_genericInterfaceMethodDeclaration = 33, 
-		RULE_variableDeclarators = 34, RULE_variableDeclarator = 35, 
-		RULE_variableInitializer = 37, RULE_arrayInitializer = 38, RULE_classOrInterfaceType = 39, 
-		RULE_typeArgument = 40, RULE_qualifiedNameList = 41,  RULE_lastFormalParameter = 45, 
-		RULE_qualifiedName = 46,  RULE_integerLiteral = 48, 
-		RULE_floatLiteral = 49, RULE_altAnnotationQualifiedName = 50, RULE_annotation = 51, 
-		RULE_elementValuePairs = 52, RULE_elementValuePair = 53, RULE_elementValue = 54, 
-		RULE_elementValueArrayInitializer = 55, RULE_annotationTypeDeclaration = 56, 
-		RULE_annotationTypeBody = 57, RULE_annotationTypeElementDeclaration = 58, 
-		RULE_annotationTypeElementRest = 59, RULE_annotationMethodOrConstantRest = 60, 
-		RULE_annotationMethodRest = 61, RULE_annotationConstantRest = 62, RULE_defaultValue = 63, 
-		RULE_localVariableDeclaration = 66, RULE_localTypeDeclaration = 67,  RULE_catchClause = 69, 
+		RULE_typeParameters = 8, RULE_typeParameter = 9, RULE_typeBound = 10, 
+		RULE_enumDeclaration = 11, RULE_enumConstants = 12, RULE_enumConstant = 13, 
+		RULE_enumBodyDeclarations = 14, RULE_genericMethodDeclaration = 23, RULE_genericConstructorDeclaration = 24, 
+		RULE_constructorDeclaration = 25, RULE_fieldDeclaration = 26, RULE_constDeclaration = 29, 
+		RULE_constantDeclarator = 30,  RULE_genericInterfaceMethodDeclaration = 33, RULE_variableInitializer = 37, 
+		RULE_arrayInitializer = 38, RULE_typeArgument = 40, RULE_qualifiedNameList = 41,  
+		RULE_lastFormalParameter = 45, RULE_qualifiedName = 46,  RULE_altAnnotationQualifiedName = 50, 
+		RULE_annotation = 51, RULE_elementValuePairs = 52, RULE_elementValuePair = 53, 
+		RULE_elementValue = 54, RULE_elementValueArrayInitializer = 55, RULE_annotationTypeDeclaration = 56, 
+		RULE_annotationTypeBody = 57, RULE_annotationTypeElementDeclaration = 58, RULE_annotationTypeElementRest = 59, 
+		RULE_annotationMethodOrConstantRest = 60, RULE_annotationMethodRest = 61, RULE_annotationConstantRest = 62, 
+		RULE_defaultValue = 63, RULE_localTypeDeclaration = 67,  RULE_catchClause = 69, 
 		RULE_catchType = 70, RULE_finallyBlock = 71, RULE_resourceSpecification = 72, 
 		RULE_resources = 73, RULE_resource = 74, RULE_switchBlockStatementGroup = 75, 
 		RULE_switchLabel = 76, RULE_forControl = 77, RULE_forInit = 78, RULE_enhancedForControl = 79, 
@@ -42,7 +35,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		RULE_createdName = 90, RULE_innerCreator = 91, RULE_arrayCreatorRest = 92, 
 		RULE_classCreatorRest = 93, RULE_explicitGenericInvocation = 94, RULE_typeArgumentsOrDiamond = 95, 
 		RULE_nonWildcardTypeArgumentsOrDiamond = 96, RULE_nonWildcardTypeArguments = 97, 
-		RULE_typeList = 98,  RULE_primitiveType = 100, RULE_typeArguments = 101, 
+		RULE_typeList = 98,   RULE_typeArguments = 101, 
 		RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103, RULE_arguments = 104;
 	 */
 	static public boolean translate(TextArea ta) {
@@ -86,9 +79,9 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visitcompilationUnit(JavaParser.CompilationUnitContext ctx) {
 			if (ctx.getRuleIndex() == 3) {
 				TypeDeclarationVisitor.visittypeDeclaration(ctx.typeDeclaration(0));
-			}else if (ctx.getRuleIndex() == 2) {
+			}if (ctx.getRuleIndex() == 2) {
 				ImportDeclarationVisitor.visitimportDeclaration(ctx.importDeclaration(0));
-			}else if (ctx.getRuleIndex() == 1) {
+			}if (ctx.getRuleIndex() == 1) {
 				PackageDeclarationVisitor.visitpackageDeclaration(ctx.packageDeclaration());
 			}else
 				compilationUnit = ctx.getText();
@@ -120,7 +113,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visittypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 7) {
 				ClassDeclarationVisitor.visitclassDeclaration(ctx.classDeclaration());
-			}else if (ctx.getRuleIndex() == 15) {
+			}if (ctx.getRuleIndex() == 15) {
 				InterfaceDeclarationVisitor.visitinterfaceDeclaration(ctx.interfaceDeclaration());
 			}
 			else
@@ -132,10 +125,11 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		private String classdeclaration;
 		
 		ClassBodyVisitor ClassBodyVisitor=new ClassBodyVisitor();
-		
 		public String visitclassDeclaration(JavaParser.ClassDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 16) {
 				ClassBodyVisitor.visitClassBody(ctx.classBody());
+			}if (ctx.getRuleIndex() == 16) {
+				
 			}
 			else
 				classdeclaration = ctx.getText();
@@ -165,7 +159,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 4) {
 				modifierVisitor.visitModifier(ctx.modifier(0));
-			}else if (ctx.getRuleIndex() == 19) {
+			}if (ctx.getRuleIndex() == 19) {
 				memberdeclarationVisitor.visitmemberDeclaration(ctx.memberDeclaration());
 			}
 			else
@@ -177,6 +171,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		private String classdeclaration;
 		
 		InterfaceBodyVisitor interfaceBodyVisitor=new InterfaceBodyVisitor();
+		
 		
 		public String visitinterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 17) {
@@ -207,10 +202,11 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		ModifierVisitor modifierVisitor=new ModifierVisitor();
 		interfaceMemberDeclarationVisitor InterfaceMemberDeclarationVisitor=new interfaceMemberDeclarationVisitor();
 		
+		
 		public String visitInterfaceBodyDeclaration(JavaParser.InterfaceBodyDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 4) {
 				modifierVisitor.visitModifier(ctx.modifier(0));
-			}else if(ctx.getRuleIndex() == 28) {
+			}if(ctx.getRuleIndex() == 28) {
 				InterfaceMemberDeclarationVisitor.visitinterfaceMemberDeclaration(ctx.interfaceMemberDeclaration());
 			}
 			else
@@ -223,13 +219,11 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		private String modifier;
 		
 		ClassOrInterfaceModifierVisitor classorinterfaceVisitor=new ClassOrInterfaceModifierVisitor();
-		VariableModifierVisitor variableVisitor=new VariableModifierVisitor();
+		
 		
 		public String visitModifier(JavaParser.ModifierContext ctx) {
 			if (ctx.getRuleIndex() == 5) {
 				classorinterfaceVisitor.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
-			}else if (ctx.getRuleIndex() == 6) {
-				//variableVisitor.visitVariableModifier(ctx.);
 			}
 			else
 				modifier = ctx.getText();
@@ -244,14 +238,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			return classorinterfacemodifier;
 		}
 	}
-	private static class VariableModifierVisitor extends JavaParserBaseVisitor<String>{
-		private String variablemodifier;
-		
-		public String visitVariableModifier(JavaParser.VariableModifierContext ctx) {
-			variablemodifier = ctx.getText();
-			return variablemodifier;
-		}
-	}
+	
 	private static class methodCallVisitor extends JavaParserBaseVisitor<String>{
 		private String methodcall;
 		
@@ -290,43 +277,62 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visitmethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 21) {
 				methodbodyVisitor.visitmethodBody(ctx.methodBody());
-			}else if (ctx.getRuleIndex() == 22) {
+			}if (ctx.getRuleIndex() == 22) {
 				typeTypeorVoidVisitor.visittypeTypeorVoid(ctx.typeTypeOrVoid());
-			}else if (ctx.getRuleIndex() == 42) {
+			}if (ctx.getRuleIndex() == 42) {
 				FormalParametersVisitor.visitformalParameters(ctx.formalParameters());
 			}else
 				methoddeclaration = ctx.getText();
 		return methoddeclaration;
 		}
 	}
+	private static class GenericMethodDeclarationVisitor extends JavaParserBaseVisitor<String>{
+		private String genericmethoddeclaration;
+		
+		public String visitGenericMethodDeclaration(JavaParser.GenericMethodDeclarationContext ctx) {
+			
+				genericmethoddeclaration = ctx.getText();
+		return genericmethoddeclaration;
+		}
+	}
+	private static class InterfaceMethodModifierVisitor extends JavaParserBaseVisitor<String>{
+		private String interfacemethodmodifierdeclaration;
+		
+		public String visitInterfaceMethodModifier(JavaParser.InterfaceMethodModifierContext ctx) {
+			interfacemethodmodifierdeclaration = ctx.getText();
+			return interfacemethodmodifierdeclaration;
+		}
+	}
 	private static class interfaceMemberDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String interfacememberdeclaration;
 		
-		interfaceMethodDeclarationVisitor interfacemethoddeclarationVisitor=new interfaceMethodDeclarationVisitor();
+		InterfaceMethodDeclarationVisitor interfacemethoddeclarationVisitor=new InterfaceMethodDeclarationVisitor();
 		
 		public String visitinterfaceMemberDeclaration(JavaParser.InterfaceMemberDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 31) {
-				interfacemethoddeclarationVisitor.visitmethodDeclaration(ctx.interfaceMethodDeclaration());
+				interfacemethoddeclarationVisitor.visitinterfaceMethodDeclaration(ctx.interfaceMethodDeclaration());
 			}
 			else
 				interfacememberdeclaration = ctx.getText();
 		return interfacememberdeclaration;
 		}
 	}
-	private static class interfaceMethodDeclarationVisitor extends JavaParserBaseVisitor<String>{
+	private static class InterfaceMethodDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String interfacemethoddeclaration;
 		
 		methodBodyVisitor methodbodyVisitor=new methodBodyVisitor();
 		typeTypeorVoidVisitor typeTypeorVoidVisitor=new typeTypeorVoidVisitor();
 		formalParametersVisitor FormalParametersVisitor=new formalParametersVisitor();
-		
-		public String visitmethodDeclaration(JavaParser.InterfaceMethodDeclarationContext ctx) {
+		InterfaceMethodModifierVisitor interfaceMethodModifierVisitor=new InterfaceMethodModifierVisitor();
+		public String visitinterfaceMethodDeclaration(JavaParser.InterfaceMethodDeclarationContext ctx) {
 			if (ctx.getRuleIndex() == 21) {
 				methodbodyVisitor.visitmethodBody(ctx.methodBody());
-			}else if (ctx.getRuleIndex() == 22) {
+			}if (ctx.getRuleIndex() == 22) {
 				typeTypeorVoidVisitor.visittypeTypeorVoid(ctx.typeTypeOrVoid());
-			}else if (ctx.getRuleIndex() == 42) {
+			}if (ctx.getRuleIndex() == 42) {
 				FormalParametersVisitor.visitformalParameters(ctx.formalParameters());
+			}if (ctx.getRuleIndex() == 32) {
+				interfaceMethodModifierVisitor.visitInterfaceMethodModifier(ctx.interfaceMethodModifier(0));
 			}else
 				interfacemethoddeclaration = ctx.getText();
 		return interfacemethoddeclaration;
@@ -369,11 +375,28 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		public String visitformalParameter(JavaParser.FormalParameterContext ctx) {
 			if (ctx.getRuleIndex() == 99) {
 				TypeTypeVisitor.visitTypeType(ctx.typeType());
-			}else if (ctx.getRuleIndex() == 36) {
+			}if (ctx.getRuleIndex() == 36) {
 				variableDeclaratorIdVisitor.visitVariableDeclaratorId(ctx.variableDeclaratorId());
 			}else
 				formalparameter = ctx.getText();
 		return formalparameter;
+		}
+	}
+	private static class LocalVariableDeclaration extends JavaParserBaseVisitor<String>{
+		private String localvariabledeclaration;
+		
+		typeTypeVisitor TypeTypeVisitor=new typeTypeVisitor();
+		VariableDeclaratorsVisitor variableDeclaratorsVisitor=new VariableDeclaratorsVisitor();
+		
+		public String visitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+			if(ctx.getRuleIndex()==100) {
+				TypeTypeVisitor.visitTypeType(ctx.typeType());
+			}if(ctx.getRuleIndex()==34) {
+				variableDeclaratorsVisitor.visitVariableDeclarators(ctx.variableDeclarators());
+			}
+			else
+				localvariabledeclaration= ctx.getText();
+				return localvariabledeclaration;
 		}
 	}
 	private static class typeTypeVisitor extends JavaParserBaseVisitor<String>{
@@ -381,21 +404,80 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		
 		classOrInterfaceTypeVisitor ClassOrInterfaceTypeVisitor=new classOrInterfaceTypeVisitor();
 		
+		PrimitiveTypeVisitor primitiveTypeVisitor=new PrimitiveTypeVisitor();
+		
 		public String visitTypeType(JavaParser.TypeTypeContext ctx) {
 			if (ctx.getRuleIndex() == 39) {
 				ClassOrInterfaceTypeVisitor.visitclassOrInterfaceType(ctx.classOrInterfaceType());
+			}if (ctx.getRuleIndex()==100) {
+				primitiveTypeVisitor.visitPrimitiveType(ctx.primitiveType());
 			}
 			else
 				typetype = ctx.getText();
 		return typetype;
 		}
 	}
+	
+	private static class PrimitiveTypeVisitor extends JavaParserBaseVisitor<String>{
+		private String primitivetype;
+		
+		
+		public String visitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
+			primitivetype = ctx.getText();
+			return primitivetype;
+		}
+	}
+	private static class ClassTypeVisitor extends JavaParserBaseVisitor<String>{
+		private String classtype;
+		
+		
+		public String visitClassType(JavaParser.ClassTypeContext ctx) {
+			classtype = ctx.getText();
+			return classtype;
+		}
+	}
+	private static class VariableDeclaratorsVisitor extends JavaParserBaseVisitor<String>{
+		private String variabledeclarators;
+		
+		VariableDeclaratorVisitor variableDeclaratorVisitor=new VariableDeclaratorVisitor();
+		
+		public String visitVariableDeclarators(JavaParser.VariableDeclaratorsContext ctx) {
+			if(ctx.getRuleIndex()==35) {
+				variableDeclaratorVisitor.visitVariableDeclarator(ctx.variableDeclarator(0));
+			}else
+			variabledeclarators = ctx.getText();
+			return variabledeclarators;
+		}
+	}
+	private static class VariableDeclaratorVisitor extends JavaParserBaseVisitor<String>{
+		private String variabledeclarator;
+		VariableDeclaratorIdVisitor variableDeclaratorIdVisitor=new VariableDeclaratorIdVisitor();
+		VariableInitializerVisitor variableInitializerVisitor=new VariableInitializerVisitor();
+		public String visitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
+			if(ctx.getRuleIndex()==36) {
+				variableDeclaratorIdVisitor.visitVariableDeclaratorId(ctx.variableDeclaratorId());
+			}
+			if(ctx.getRuleIndex()==37) {
+				variableInitializerVisitor.visitVariableInitializer(ctx.variableInitializer());
+			}
+			else
+			variabledeclarator = ctx.getText();
+			return variabledeclarator;
+		}
+	}
 	private static class VariableDeclaratorIdVisitor extends JavaParserBaseVisitor<String>{
 		private String variabledeclaratorid;
-		
 		public String visitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
 			variabledeclaratorid = ctx.getText();
 			return variabledeclaratorid;
+		}
+	}
+	private static class VariableModifierVisitor extends JavaParserBaseVisitor<String>{
+		private String variablemodifier;
+		
+		public String visitVariableModifier(JavaParser.VariableModifierContext ctx) {
+			variablemodifier = ctx.getText();
+			return variablemodifier;
 		}
 	}
 	private static class classOrInterfaceTypeVisitor extends JavaParserBaseVisitor<String>{
@@ -446,10 +528,13 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 		private String blockstatement;
 		
 		StatementVisitor statementVisitor=new StatementVisitor();
+		LocalVariableDeclaration localVariableDeclaration=new LocalVariableDeclaration();
 		
 		public String visitBlockStatement(JavaParser.BlockStatementContext ctx) {
 			if (ctx.getRuleIndex() == 68) {
 				statementVisitor.visitStatement(ctx.statement());
+			}if (ctx.getRuleIndex() == 66) {
+				localVariableDeclaration.visitLocalVariableDeclaration(ctx.localVariableDeclaration());
 			}
 			else
 				blockstatement = ctx.getText();
@@ -497,16 +582,29 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 			}
 			if (ctx.getRuleIndex() == 87) {
 				primaryVisitor.visitPrimary(ctx.primary());
-			}else if(ctx.getRuleIndex()==83) {
+			}if(ctx.getRuleIndex()==83) {
 				visitExpression(ctx.expression(0));
-			}else if(ctx.getRuleIndex()==82) {
+			}if(ctx.getRuleIndex()==82) {
 				methodcallVisitor.visitmethodCall(ctx.methodCall());
 			}else
 				expression = ctx.getText();
 		return expression;
 		}
 	}
-	 
+	private static class VariableInitializerVisitor extends JavaParserBaseVisitor<String>{
+		private String variableinitializaer;
+		
+		ExpressionVisitor expressionVisitor=new ExpressionVisitor();
+		
+		public String visitVariableInitializer(JavaParser.VariableInitializerContext ctx) {
+			if (ctx.getRuleIndex() == 37) {
+				expressionVisitor.visitExpression(ctx.expression());
+			}
+			else
+				variableinitializaer = ctx.getText();
+		return variableinitializaer;
+		}
+	}
 	private static class PrimaryVisitor extends JavaParserBaseVisitor<String>{
 		private String primary;
 		
@@ -525,9 +623,32 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 	public static class LiteralVisitor extends JavaParserBaseVisitor<String>{
 		 private String literal;
 		 
+		 integerLiteralVisitor IntegerLiteralVisitor=new integerLiteralVisitor();
+		 floatLiteralVisitor FloatLiteralVisitor=new floatLiteralVisitor();
 		 public String visitLiteral(JavaParser.LiteralContext ctx) {
-			 literal = ctx.getText();
-			 return literal;
+			 if(ctx.getRuleIndex()==48) {
+				 IntegerLiteralVisitor.visitIntegerLiteral(ctx.integerLiteral());
+			 }if(ctx.getRuleIndex()==49) {
+				 FloatLiteralVisitor.visitFloatLiteral(ctx.floatLiteral());
+			 }else 
+				 literal = ctx.getText();
+				 return literal;
+		}
+	}
+	public static class integerLiteralVisitor extends JavaParserBaseVisitor<String>{
+		 private String integerliteral;
+		 
+		 public String visitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
+			 integerliteral = ctx.getText();
+			 return integerliteral;
+		 }
+	}
+	public static class floatLiteralVisitor extends JavaParserBaseVisitor<String>{
+		 private String floatliteral;
+		 
+		 public String visitFloatLiteral(JavaParser.FloatLiteralContext ctx) {
+			 floatliteral = ctx.getText();
+			 return floatliteral;
 		 }
 	}
 	
