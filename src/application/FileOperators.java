@@ -13,9 +13,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+import antlr.JavaTranslator;
 
-public class FileOperators {
-	
+public class FileOperators extends JavaTranslator{
+	public FileOperators() {
+		super();
+	}
 	static public boolean save(TextArea ta, char fileType) {
 		boolean success = false;
 		if (!ta.getText().trim().equals("")) {
@@ -72,6 +75,7 @@ public class FileOperators {
 	
 	@SuppressWarnings("deprecation")
 	static public boolean translate(TextArea ta) {
+		//super.compilationUnitVisitor
 		boolean success = false;
 		
 		String content = ta.getText();
