@@ -171,26 +171,27 @@ public class JavaListener extends JavaParserBaseListener {
 			System.out.println(ctx.getChild(0).getText());
 		}
 	}
-
+	/*
 	@Override
 	public void enterBlockStatement(JavaParser.BlockStatementContext ctx) {
 		System.out.println("enterBlockStatement");
-	}
+	}*/
 
 	@Override
 	public void exitBlockStatement(JavaParser.BlockStatementContext ctx) {
-		System.out.println("exitBlockStatement");
+		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
+			System.out.println(ctx.getChild(0).getText());
+		}
 	}
-
+	/*
 	@Override
 	public void enterTypeType(JavaParser.TypeTypeContext ctx) {
 		//System.out.println("enterTypeType");
-	}
+	}*/
 
 	@Override
 	public void exitTypeType(JavaParser.TypeTypeContext ctx) {
 		for (ParseTree p : ctx.children) {
-			
 			if (p.getChildCount() == 0) {
 				System.out.println(p.getText());
 			}
@@ -216,7 +217,7 @@ public class JavaListener extends JavaParserBaseListener {
 	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) { 
 		System.out.println("exitVariableDeclarator");
 	}
-
+	/*
 	@Override
 	public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
 		System.out.println("enterLocalVariableDeclaration");
@@ -225,17 +226,17 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
 		System.out.println("exitLocalVariableDeclaration");
-	}
+	}*/
 
 	@Override
 	public void enterPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
-		System.out.println("enterPrimitiveType");System.out.println("exitClassBody");
+		System.out.println(ctx.getText());
 	}
-
+	/*
 	@Override
 	public void exitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
 		System.out.println("exitPrimitiveType");
-	}
+	}*/
 
 	@Override
 	public void enterStatement(JavaParser.StatementContext ctx) {

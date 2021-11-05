@@ -94,12 +94,6 @@ public class FileOperators {
         
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         
-        //String s = translator.visitCompilationUnit(parser.compilationUnit());
-        //System.out.println(s);
-        //translator.visitCompilationUnit(tree);
-        
-        //System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
-        
 		return success;
 	}
 }
