@@ -1,8 +1,14 @@
 package antlr;
 
+import java.util.ArrayList;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class JavaListener extends JavaParserBaseListener {
+	ArrayList<String> queue = new ArrayList<String>();
+	ArrayList<Integer> intQueue = new ArrayList<Integer>();
+	int iterator = 0;
+	
 	/*
 	@Override
 	public void enterCompilationUnit(JavaParser.CompilationUnitContext ctx) {
@@ -180,7 +186,7 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void exitBlockStatement(JavaParser.BlockStatementContext ctx) {
 		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
-			System.out.println(ctx.getChild(0).getText());
+			System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
 	}
 	/*
@@ -197,12 +203,12 @@ public class JavaListener extends JavaParserBaseListener {
 			}
 		}
 	}
-
+	/*
 	@Override
 	public void enterVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
 		System.out.println(ctx.getText());
 	}
-	/*
+	
 	@Override
 	public void exitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
 		//System.out.println("exitVariableDeclaratorId");
@@ -210,13 +216,14 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
-		System.out.println("enterVariableDeclarator");
+		System.out.println(ctx.getChild(0).getText());
+		System.out.println(ctx.getChild(1).getText());
 	}
-
+	/*
 	@Override
 	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) { 
 		System.out.println("exitVariableDeclarator");
-	}
+	}*/
 	/*
 	@Override
 	public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
@@ -237,35 +244,52 @@ public class JavaListener extends JavaParserBaseListener {
 	public void exitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
 		System.out.println("exitPrimitiveType");
 	}*/
-
+	/*
 	@Override
 	public void enterStatement(JavaParser.StatementContext ctx) {
 		System.out.println("enterStatement");
-	}
+	}*/
 
 	@Override
 	public void exitStatement(JavaParser.StatementContext ctx) {
 		System.out.println("exitStatement");
 	}
-
+	
 	@Override
 	public void enterExpression(JavaParser.ExpressionContext ctx) {
-		System.out.println("enterExpression");
+		iterator++;
+		for (ParseTree p : ctx.children) {
+			if (p.getChildCount() == 0) {
+				queue.add(p.getText());
+				intQueue.add(iterator);
+			}
+		}
 	}
 
 	@Override
 	public void exitExpression(JavaParser.ExpressionContext ctx) {
-		System.out.println("exitExpression");
+		iterator--;
+		if (intQueue.lastIndexOf(iterator) != -1) {
+			if (!queue.isEmpty()) {
+				System.out.println(queue.get(0));
+				queue.remove(0);
+				intQueue.remove(intQueue.size() - 1);
+			}
+		}
 	}
-
+	
 	@Override
 	public void enterPrimary(JavaParser.PrimaryContext ctx) {
-		System.out.println("enterPrimary");
+		if (ctx.getChild(0).getChildCount() == 0) {
+			System.out.println(ctx.getChild(0).getText());
+		}
 	}
 
 	@Override
 	public void exitPrimary(JavaParser.PrimaryContext ctx) {
-		System.out.println("exitPrimary");
+		if (ctx.getChildCount() > 1 && ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
+			System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+		}
 	}
 
 	@Override
@@ -280,22 +304,22 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
-		System.out.println("enterIntegerLiteral");
+		System.out.println(ctx.getText());
 	}
-
+	/*
 	@Override
 	public void exitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
 		System.out.println("exitIntegerLiteral");
-	}
+	}*/
 
 	@Override
 	public void enterFloatLiteral(JavaParser.FloatLiteralContext ctx) {
-		System.out.println("enterFloatLiteral");
+		System.out.println(ctx.getText());
 	}
-
+	/*
 	@Override
 	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) { 
 		System.out.println("exitFloatLiteral");
-	}
+	}*/
 
 }
