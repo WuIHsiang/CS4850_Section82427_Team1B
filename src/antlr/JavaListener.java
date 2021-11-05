@@ -259,9 +259,9 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void exitExpression(JavaParser.ExpressionContext ctx) {
 		if (ctx.equals(ctx.getParent().children.get(0))) {
-			for (int i = 0; i < ctx.getParent().getChildCount(); ++i) {
-				if (ctx.getParent().getChild(i).getChildCount() == 0) {
-					System.out.println(ctx.getParent().getChild(i).getText());
+			for (ParseTree p : ctx.getParent().children) {
+				if (p.getChildCount() == 0) {
+					System.out.println(p.getText());
 				}
 			}
 		}
