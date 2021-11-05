@@ -243,11 +243,12 @@ public class JavaListener extends JavaParserBaseListener {
 	public void enterStatement(JavaParser.StatementContext ctx) {
 		System.out.println("enterStatement");
 	}*/
-
+	
+	/*
 	@Override
 	public void exitStatement(JavaParser.StatementContext ctx) {
 		System.out.println("exitStatement");
-	}
+	}*/
 	
 	/*
 	@Override
@@ -282,12 +283,13 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterMethodCall(JavaParser.MethodCallContext ctx) {
-		System.out.println("enterMethodCall");
+		System.out.println(ctx.getChild(0).getText());
+		System.out.println(ctx.getChild(1).getText());
 	}
 
 	@Override
 	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
-		System.out.println("exitMethodCall");
+		System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
 	}
 
 	@Override
