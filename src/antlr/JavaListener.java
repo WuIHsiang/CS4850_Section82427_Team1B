@@ -1,0 +1,285 @@
+package antlr;
+
+public class JavaListener extends JavaParserBaseListener {
+
+	@Override
+	public void enterCompilationUnit(JavaParser.CompilationUnitContext ctx) {
+		System.out.println("enterCompilationUnit");
+	}
+	
+	@Override
+	public void exitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
+		System.out.println("exitCompilationUnit");
+	}
+	
+	@Override
+	public void enterTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		System.out.println("enterTypeDeclaration");
+	}
+	
+	@Override
+	public void exitTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		System.out.println("exitTypeDeclaration");
+	}
+	
+	@Override
+	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
+		System.out.println("enterClassOrInterfaceModifier");
+	}
+	
+	@Override
+	public void exitClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
+		System.out.println("exitClassOrInterfaceModifier");
+	}
+	
+	@Override
+	public void enterClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
+		System.out.println("enterClassOrInterfaceType");
+	}
+
+	@Override
+	public void exitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
+		System.out.println("exitClassOrInterfaceType");
+	}
+
+	@Override
+	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) { 
+		System.out.println("enterClassDeclaration");
+	}
+	
+	@Override
+	public void exitClassDeclaration(JavaParser.ClassDeclarationContext ctx) { 
+		System.out.println("exitClassDeclaration");
+	}
+
+	@Override
+	public void enterClassBody(JavaParser.ClassBodyContext ctx) {
+		System.out.println("enterClassBody");
+	}
+
+	@Override
+	public void exitClassBody(JavaParser.ClassBodyContext ctx) {
+		System.out.println("exitClassBody");
+	}
+
+	@Override
+	public void enterClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+		System.out.println("enterClassBodyDeclaration");
+	}
+
+	@Override
+	public void exitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+		System.out.println("exitClassBodyDeclaration");
+	}
+
+	@Override
+	public void enterModifier(JavaParser.ModifierContext ctx) { 
+		System.out.println("enterModifier");
+	}
+
+	@Override
+	public void exitModifier(JavaParser.ModifierContext ctx) {
+		System.out.println("exitModifier");
+	}
+
+	@Override
+	public void enterMemberDeclaration(JavaParser.MemberDeclarationContext ctx) { 
+		System.out.println("enterMemberDeclaration");
+	}
+
+	@Override
+	public void exitMemberDeclaration(JavaParser.MemberDeclarationContext ctx) {
+		System.out.println("exitMemberDeclaration");
+	}
+
+	@Override 
+	public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+		System.out.println("enterMethodDeclaration");
+	}
+
+	@Override
+	public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+		System.out.println("exitMethodDeclaration");
+	}
+
+	@Override
+	public void enterTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
+		System.out.println("enterTypeTypeOrVoid");
+	}
+
+	@Override
+	public void exitTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
+		System.out.println("exitTypeTypeOrVoid");
+	}
+
+	@Override
+	public void enterFormalParameters(JavaParser.FormalParametersContext ctx) {
+		System.out.println("enterFormalParameters");
+	}
+
+	@Override
+	public void exitFormalParameters(JavaParser.FormalParametersContext ctx) {
+		System.out.println("exitFormalParameters");
+	}
+
+	@Override
+	public void enterFormalParameterList(JavaParser.FormalParameterListContext ctx) {
+		System.out.println("enterFormalParameterList");
+	}
+
+	@Override
+	public void exitFormalParameterList(JavaParser.FormalParameterListContext ctx) {
+		System.out.println("exitFormalParameterList");
+	}
+
+	@Override
+	public void enterFormalParameter(JavaParser.FormalParameterContext ctx) {
+		System.out.println("enterFormalParameter");
+	}
+
+	@Override
+	public void exitFormalParameter(JavaParser.FormalParameterContext ctx) {
+		System.out.println("exitFormalParameter");
+	}
+
+	@Override
+	public void enterMethodBody(JavaParser.MethodBodyContext ctx) {
+		System.out.println("enterMethodBody");
+	}
+
+	@Override
+	public void exitMethodBody(JavaParser.MethodBodyContext ctx) {
+		System.out.println("exitMethodBody");
+	}
+
+	@Override
+	public void enterBlock(JavaParser.BlockContext ctx) {
+		System.out.println("enterBlock");
+	}
+
+	@Override
+	public void exitBlock(JavaParser.BlockContext ctx) {
+		System.out.println("exitBlock");
+	}
+
+	@Override
+	public void enterBlockStatement(JavaParser.BlockStatementContext ctx) {
+		System.out.println("enterBlockStatement");
+	}
+
+	@Override
+	public void exitBlockStatement(JavaParser.BlockStatementContext ctx) {
+		System.out.println("exitBlockStatement");
+	}
+
+	@Override
+	public void enterTypeType(JavaParser.TypeTypeContext ctx) {
+		System.out.println("enterTypeType");
+	}
+
+	@Override
+	public void exitTypeType(JavaParser.TypeTypeContext ctx) {
+		System.out.println("exitTypeType");
+	}
+
+	@Override
+	public void enterVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
+		System.out.println("enterVariableDeclaratorId");
+	}
+
+	@Override
+	public void exitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
+		System.out.println("exitVariableDeclaratorId");
+	}
+
+	@Override
+	public void enterVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
+		System.out.println("enterVariableDeclarator");
+	}
+
+	@Override
+	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) { 
+		System.out.println("exitVariableDeclarator");
+	}
+
+	@Override
+	public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+		System.out.println("enterLocalVariableDeclaration");
+	}
+
+	@Override
+	public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+		System.out.println("exitLocalVariableDeclaration");
+	}
+
+	@Override
+	public void enterPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
+		System.out.println("enterPrimitiveType");System.out.println("exitClassBody");
+	}
+
+	@Override
+	public void exitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
+		System.out.println("exitPrimitiveType");
+	}
+
+	@Override
+	public void enterStatement(JavaParser.StatementContext ctx) {
+		System.out.println("enterStatement");
+	}
+
+	@Override
+	public void exitStatement(JavaParser.StatementContext ctx) {
+		System.out.println("exitStatement");
+	}
+
+	@Override
+	public void enterExpression(JavaParser.ExpressionContext ctx) {
+		System.out.println("enterExpression");
+	}
+
+	@Override
+	public void exitExpression(JavaParser.ExpressionContext ctx) {
+		System.out.println("exitExpression");
+	}
+
+	@Override
+	public void enterPrimary(JavaParser.PrimaryContext ctx) {
+		System.out.println("enterPrimary");
+	}
+
+	@Override
+	public void exitPrimary(JavaParser.PrimaryContext ctx) {
+		System.out.println("exitPrimary");
+	}
+
+	@Override
+	public void enterMethodCall(JavaParser.MethodCallContext ctx) {
+		System.out.println("enterMethodCall");
+	}
+
+	@Override
+	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
+		System.out.println("exitMethodCall");
+	}
+
+	@Override
+	public void enterIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
+		System.out.println("enterIntegerLiteral");
+	}
+
+	@Override
+	public void exitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
+		System.out.println("exitIntegerLiteral");
+	}
+
+	@Override
+	public void enterFloatLiteral(JavaParser.FloatLiteralContext ctx) {
+		System.out.println("enterFloatLiteral");
+	}
+
+	@Override
+	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) { 
+		System.out.println("exitFloatLiteral");
+	}
+
+}

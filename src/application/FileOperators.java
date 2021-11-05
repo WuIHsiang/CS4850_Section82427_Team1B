@@ -75,6 +75,7 @@ public class FileOperators {
 		boolean success = false;
 		
 		String content = ta.getText();
+		StringBuilder sb = new StringBuilder();
         //System.out.println("Java File:\n" + content + "\n\n");
         
         ANTLRInputStream input = new ANTLRInputStream(content);
@@ -87,13 +88,17 @@ public class FileOperators {
         
         antlr.JavaTranslator translator = new antlr.JavaTranslator();
         
-        // translator.visit(parser.compilationUnit());
-        
-        // translator.visit(parser.classDeclaration());
+        antlr.JavaListener listener = new antlr.JavaListener();
         
         ParseTree tree = parser.compilationUnit();
         
-        System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
+        ParseTreeWalker.DEFAULT.walk(listener, tree);
+        
+        //String s = translator.visitCompilationUnit(parser.compilationUnit());
+        //System.out.println(s);
+        //translator.visitCompilationUnit(tree);
+        
+        //System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
         
 		return success;
 	}
