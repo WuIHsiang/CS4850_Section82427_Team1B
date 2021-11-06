@@ -109,7 +109,7 @@ public class Controller {
 
     @FXML
     void ButtonTranslateClicked(ActionEvent event) {
-    	boolean success = FileOperators.translate(TextAreaJava);
+    	boolean success = FileOperators.translate(TextAreaJava, TextAreaC);
     	
     }
 
