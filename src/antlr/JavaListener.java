@@ -62,8 +62,8 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitClassBody(JavaParser.ClassBodyContext ctx) {
-		if (ctx.getChild(2).getChildCount() == 0) {
-			tokens.add(ctx.getChild(2).getText());
+		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
+			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
 	}
 	/*
@@ -93,8 +93,12 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override 
 	public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-		tokens.add(ctx.getChild(0).getText());
-		tokens.add(ctx.getChild(1).toString());
+		if (ctx.getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getChild(0).getText());
+			if (ctx.getChild(1).getChildCount() == 0) {
+				tokens.add(ctx.getChild(1).getText());
+			}
+		}
 	}
 
 	@Override
@@ -103,12 +107,23 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
-		//tokens.add(ctx.getText());
+		if (ctx.getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getText());
+		}
+		
 	}
-	/*
+	
 	@Override
 	public void exitTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
-	}*/
+		int index = 0;
+        for (int i = 0; i < ctx.getParent().children.size(); ++i) {
+            if (ctx.getParent().getChild(i).getChildCount() == 0) {
+            	index = i;
+                break;
+            }
+        }
+        tokens.add(ctx.getParent().getChild(index).getText());
+	}
 	
 	@Override
 	public void enterFormalParameters(JavaParser.FormalParametersContext ctx) {
@@ -227,13 +242,28 @@ public class JavaListener extends JavaParserBaseListener {
 	
 	@Override
 	public void enterStatement(JavaParser.StatementContext ctx) {
-		
-	}
+		int index = 0;
+        for (int i = 0; i < ctx.children.size(); ++i) {
+            if (ctx.getChild(i).getChildCount() > 0) {
+                index = i;
+                break;
+            }
+        }
+        
+        for (int i = 0; i < index; ++i) {
+            tokens.add(ctx.getChild(i).getText());
+        }
+    }
 	
-	/*
+	
 	@Override
 	public void exitStatement(JavaParser.StatementContext ctx) {
-	}*/
+		if (ctx.getChild(0).getText().equals("return")) {
+			if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
+				tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
+			}
+		}
+	}
 	
 	/*
 	@Override
@@ -248,6 +278,9 @@ public class JavaListener extends JavaParserBaseListener {
 					tokens.add(ctx.getParent().getChild(i).getText());
 				}
 			}
+		}
+		if (ctx.getParent().getRuleIndex() == 77) {
+			tokens.add(";");
 		}
 	}
 	
@@ -293,5 +326,41 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) { 
 	}*/
+	/*
+	@Override
+	public void enterForControl(JavaParser.ForControlContext ctx) {
+		
+	}*/
+	
+	@Override
+	public void exitForControl(JavaParser.ForControlContext ctx) {
+		tokens.add(")");
+	}
+	
+	@Override
+	public void enterForInit(JavaParser.ForInitContext ctx) {
+		
+	}
+
+	@Override
+	public void exitForInit(JavaParser.ForInitContext ctx) {
+		if (ctx.getParent().getRuleIndex() == 77) {
+			tokens.add(";");
+		}
+	}
+
+	@Override
+	public void enterParExpression(JavaParser.ParExpressionContext ctx) {
+		if (ctx.getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getChild(0).getText());
+		}
+	}
+
+	@Override
+	public void exitParExpression(JavaParser.ParExpressionContext ctx) {
+		if (ctx.getChild(2).getChildCount() == 0) {
+			tokens.add(ctx.getChild(2).getText());
+		}
+	}
 
 }
