@@ -13,12 +13,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import antlr.JavaTranslator;
 
-public class FileOperators extends JavaTranslator{
-	public FileOperators() {
-		super();
-	}
+public class FileOperators {
+	
 	static public boolean save(TextArea ta, char fileType) {
 		boolean success = false;
 		if (!ta.getText().trim().equals("")) {
@@ -74,12 +71,14 @@ public class FileOperators extends JavaTranslator{
 	}
 	
 	@SuppressWarnings("deprecation")
-	static public boolean translate(TextArea ta) {
-		//super.compilationUnitVisitor
+	static public boolean translate(TextArea ta, TextArea tc) {
 		boolean success = false;
 		
 		String content = ta.getText();
-        //System.out.println("Java File:\n" + content + "\n\n");
+		
+		String translation = "";
+		
+		StringBuilder sb = new StringBuilder();
         
         ANTLRInputStream input = new ANTLRInputStream(content);
         
@@ -91,17 +90,105 @@ public class FileOperators extends JavaTranslator{
         
         antlr.JavaTranslator translator = new antlr.JavaTranslator();
         
-        // translator.visit(parser.compilationUnit());
-        
-        // translator.visit(parser.classDeclaration());
+        antlr.JavaListener listener = new antlr.JavaListener();
         
         ParseTree tree = parser.compilationUnit();
         
-        System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
-        String[] treearr=tree.toStringTree(parser).split("(");
-        for(int i=0;i<treearr.length;i++) {
-        	System.out.println(treearr[i]);
+        ParseTreeWalker.DEFAULT.walk(listener, tree);
+        
+        int indent = 0, forDepth = 0;
+        boolean forLoop = false;
+        translation +=("using System;\n");
+        
+        for (int i = 0; i < listener.tokens.size() - 1; i++) {
+        	if (listener.tokens.get(i).contentEquals("for")) {
+        		forLoop = true;
+        	}
+        	if (listener.tokens.get(i).contentEquals("(") && forLoop) {
+        		forDepth++;
+        	}
+        	else if (listener.tokens.get(i).contentEquals(")") && forLoop) {
+        		forDepth--;
+        		if (forDepth == 0) {
+        			forLoop = false;
+        		}
+        	}
+        	
+        	translation +=(listener.tokens.get(i));
+        	if (!listener.tokens.get(i).contentEquals(";") 
+        			&& !listener.tokens.get(i).contentEquals(".") 
+        			&& !listener.tokens.get(i + 1).contentEquals(".")
+        			&& !listener.tokens.get(i).contentEquals("(")
+        			&& !listener.tokens.get(i + 1).contentEquals("(")
+        			&& !listener.tokens.get(i + 1).contentEquals(")")
+        			&& !listener.tokens.get(i + 1).contentEquals(";")) {
+        		translation +=(" ");
+        	}
+        	
+        	
+        	
+        	if (listener.tokens.get(i).contentEquals(";")) {
+        		if (!forLoop) {
+        			translation +=("\n");
+        		}
+        		if (!listener.tokens.get(i + 1).contentEquals("}") && !forLoop) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        		else if (!forLoop) {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        		else if (!listener.tokens.get(i + 1).contentEquals("}") && forLoop) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += (" ");
+            		}
+        		}
+        		else if (forLoop) {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += (" ");
+            		}
+        		}
+        	}
+        	else if (listener.tokens.get(i).contentEquals("{")) {
+        		translation += ("\n");
+        		indent++;
+        		for (int y = 0; y < indent; y++) {
+        			translation += ("    ");
+        		}
+        	}
+        	else if (listener.tokens.get(i).contentEquals("}")) {
+        		translation += ("\n");
+        		indent--;
+        		if (!listener.tokens.get(i + 1).contentEquals("}")) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        		else {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        	}
         }
+        
+        translation += (listener.tokens.get(listener.tokens.size() - 1));
+        
+        translation = translation.replace("System.out.println", "Console.WriteLine");
+        translation = translation.replace("main", "Main");
+        translation = translation.replace(".length()", ".Length");
+        translation = translation.replace(".charAt(i)", "[i]");
+        translation = translation.replaceAll("Scanner.*.*;","");
+        translation = translation.replaceAll("=.*nextInt().*;","= Convert.ToInt32(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextLine().*;","= Console.ReadLine()");
+        
+        tc.setText(translation);
+        
+        translation = "";
+        
 		return success;
 	}
 }

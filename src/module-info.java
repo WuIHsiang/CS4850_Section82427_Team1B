@@ -1,6 +1,4 @@
-module CS4850_Section82427_Team1B{
-	/*requires javafx.controls;
-	requires javafx.fxml;*/
+module snrproj{
 	requires antlr;
 	requires javafx.graphics;
     requires javafx.controls;
