@@ -185,6 +185,7 @@ public class FileOperators {
         translation = translation.replaceAll("=.*nextInt().*;","= Convert.ToInt32(Console.ReadLine());");
         translation = translation.replaceAll("=.*nextLine().*;","= Console.ReadLine();");
         translation = translation.replaceAll("=.*nextDouble().*;","= Convert.ToDouble(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextFloat().*;","= float.Parse(Console.ReadLine());");
         translation = translation.replaceAll("=.*nextChar().*;","= Console.ReadLine()[0];");
         translation = translation.replaceAll("=.*nextShort().*;","= (short)Convert.ToInt32(Console.ReadLine());");
         translation = translation.replaceAll("=.*nextLong().*;","= (long)Convert.ToInt32(Console.ReadLine());");
