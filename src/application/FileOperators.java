@@ -191,6 +191,7 @@ public class FileOperators {
         translation = translation.replace(".charAt(i)", "[i]");
         translation = translation.replace(", }", "}");
         translation = translation.replace("( ", "(");
+        translation = translation.replace(" ,", ",");
         
         tc.setText(translation);
         

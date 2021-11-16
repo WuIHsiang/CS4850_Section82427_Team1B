@@ -155,6 +155,11 @@ public class JavaListener extends JavaParserBaseListener {
 		if (ctx.getChild(ctx.getChildCount() - 1).getChild(0).getChildCount() == 0) {
 			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getChild(0).getText());
 		}
+		
+		var parent = ctx.getParent();
+		if (parent.getRuleIndex() == 43 && parent.getChildCount() > 1 && parent.getChild(parent.getChildCount() - 1) != ctx)  {
+			tokens.add(",");
+		}
 	}
 	/*
 	@Override
@@ -204,7 +209,7 @@ public class JavaListener extends JavaParserBaseListener {
 		
 		var parent = ctx.getParent();
 		if (parent.getRuleIndex() == 79)
-			tokens.add(parent.getChild(1).getText() + " in ");
+			tokens.add(parent.getChild(1).getText() + " in");
 	}
 	
 	@Override
