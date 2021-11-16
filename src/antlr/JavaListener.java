@@ -1,267 +1,266 @@
 package antlr;
 
+import java.util.ArrayList;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class JavaListener extends JavaParserBaseListener {
+	public ArrayList<String> tokens = new ArrayList<String>();
+	
 	/*
 	@Override
 	public void enterCompilationUnit(JavaParser.CompilationUnitContext ctx) {
-		System.out.println("enterCompilationUnit");
 	}
 	
 	@Override
 	public void exitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
-		System.out.println("exitCompilationUnit");
 	}*/
 	/*
 	@Override
 	public void enterTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
-		System.out.println("enterTypeDeclaration");
 	}
 	
 	@Override
 	public void exitTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
-		System.out.println("exitTypeDeclaration");
 	}*/
 	
 	@Override
 	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
-		//System.out.println("enterClassOrInterfaceModifier");
-		System.out.println(ctx.getText());
+		tokens.add(ctx.getText());
+		
 	}
 	
 	@Override
 	public void exitClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
-		//System.out.println("exitClassOrInterfaceModifier");
 	}
 	
 	@Override
 	public void enterClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-		System.out.println(ctx.getText());
+		tokens.add(ctx.getText());
 	}
 
 	@Override
 	public void exitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-		//System.out.println("exitClassOrInterfaceType");
 	}
 
 	@Override
 	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) { 
-		//System.out.println("enterClassDeclaration");
-		System.out.println(ctx.CLASS());
-		System.out.println(ctx.IDENTIFIER());
+		tokens.add(ctx.CLASS().toString());
+		tokens.add(ctx.IDENTIFIER().toString());
 	}
 	
 	@Override
 	public void exitClassDeclaration(JavaParser.ClassDeclarationContext ctx) { 
-		//System.out.println("exitClassDeclaration");
 	}
-	/*
+	
 	@Override
 	public void enterClassBody(JavaParser.ClassBodyContext ctx) {
-		System.out.println("enterClassBody");
+		if (ctx.getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getChild(0).getText());
+		}
 	}
 
 	@Override
 	public void exitClassBody(JavaParser.ClassBodyContext ctx) {
-		System.out.println("exitClassBody");
-	}*/
+		if (ctx.getChild(2).getChildCount() == 0) {
+			tokens.add(ctx.getChild(2).getText());
+		}
+	}
 	/*
 	@Override
 	public void enterClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
-		System.out.println("enterClassBodyDeclaration");
 	}
 
 	@Override
 	public void exitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
-		System.out.println("exitClassBodyDeclaration");
 	}*/
 	/*
 	@Override
 	public void enterModifier(JavaParser.ModifierContext ctx) { 
-		System.out.println("enterModifier");
 	}
 
 	@Override
 	public void exitModifier(JavaParser.ModifierContext ctx) {
-		System.out.println("exitModifier");
 	}*/
 	/*
 	@Override
 	public void enterMemberDeclaration(JavaParser.MemberDeclarationContext ctx) { 
-		System.out.println("enterMemberDeclaration");
 	}
 	
 	@Override
 	public void exitMemberDeclaration(JavaParser.MemberDeclarationContext ctx) {
-		System.out.println("exitMemberDeclaration");
 	}*/
 
 	@Override 
 	public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-		System.out.println(ctx.IDENTIFIER());
+		tokens.add(ctx.getChild(0).getText());
+		tokens.add(ctx.getChild(1).toString());
 	}
 
 	@Override
 	public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-		//System.out.println("exitMethodDeclaration");
 	}
 
 	@Override
 	public void enterTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
-		//System.out.println("enterTypeTypeOrVoid");
-		System.out.println(ctx.getText());
-	}
-
-	@Override
-	public void exitTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
-		//System.out.println("exitTypeTypeOrVoid");
+		//tokens.add(ctx.getText());
 	}
 	/*
 	@Override
+	public void exitTypeTypeOrVoid(JavaParser.TypeTypeOrVoidContext ctx) {
+	}*/
+	
+	@Override
 	public void enterFormalParameters(JavaParser.FormalParametersContext ctx) {
-		System.out.println("enterFormalParameters");
+		if (ctx.getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getChild(0).getText());
+		}
 	}
 
 	@Override
 	public void exitFormalParameters(JavaParser.FormalParametersContext ctx) {
-		System.out.println("exitFormalParameters");
-	}*/
+		if (ctx.getChild(2).getChildCount() == 0) {
+			tokens.add(ctx.getChild(2).getText());
+		}
+	}
 	/*
 	@Override
 	public void enterFormalParameterList(JavaParser.FormalParameterListContext ctx) {
-		System.out.println("enterFormalParameterList");
 	}
 
 	@Override
 	public void exitFormalParameterList(JavaParser.FormalParameterListContext ctx) {
-		System.out.println("exitFormalParameterList");
 	}*/
 	/*
 	@Override
 	public void enterFormalParameter(JavaParser.FormalParameterContext ctx) {
-		System.out.println("enterFormalParameter");
-	}
+	}*/
 
 	@Override
 	public void exitFormalParameter(JavaParser.FormalParameterContext ctx) {
-		System.out.println("exitFormalParameter");
-	}*/
+		if (ctx.getChild(ctx.getChildCount() - 1).getChild(0).getChildCount() == 0) {
+			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getChild(0).getText());
+		}
+	}
 	/*
 	@Override
 	public void enterMethodBody(JavaParser.MethodBodyContext ctx) {
-		System.out.println("enterMethodBody");
 	}
 
 	@Override
 	public void exitMethodBody(JavaParser.MethodBodyContext ctx) {
-		System.out.println("exitMethodBody");
 	}*/
 
 	@Override
 	public void enterBlock(JavaParser.BlockContext ctx) {
 		if (ctx.getChild(0).getChildCount() == 0) {
-			System.out.println(ctx.getChild(0).getText());
+			tokens.add(ctx.getChild(0).getText());
 		}
 	}
 
 	@Override
 	public void exitBlock(JavaParser.BlockContext ctx) {
 		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
-			System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
 	}
-	/*
+	
 	@Override
 	public void enterBlockStatement(JavaParser.BlockStatementContext ctx) {
-		System.out.println("enterBlockStatement");
-	}*/
+	}
 
 	@Override
 	public void exitBlockStatement(JavaParser.BlockStatementContext ctx) {
 		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
-			System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
 	}
 	/*
 	@Override
 	public void enterTypeType(JavaParser.TypeTypeContext ctx) {
-		//System.out.println("enterTypeType");
 	}*/
 
 	@Override
 	public void exitTypeType(JavaParser.TypeTypeContext ctx) {
 		for (ParseTree p : ctx.children) {
 			if (p.getChildCount() == 0) {
-				System.out.println(p.getText());
+				tokens.add(p.getText());
 			}
 		}
 	}
-	/*
-	@Override
-	public void enterVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
-		System.out.println(ctx.getText());
-	}
 	
 	@Override
+	public void enterVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
+		//tokens.add(ctx.getText());
+	}
+	/*
+	@Override
 	public void exitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
-		//System.out.println("exitVariableDeclaratorId");
 	}*/
 
 	@Override
 	public void enterVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
-		System.out.println(ctx.getChild(0).getText());
-		System.out.println(ctx.getChild(1).getText());
+		tokens.add(ctx.getChild(0).getText());
+		tokens.add(ctx.getChild(1).getText());
 	}
 	/*
 	@Override
 	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) { 
-		System.out.println("exitVariableDeclarator");
 	}*/
 	/*
 	@Override
 	public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-		System.out.println("enterLocalVariableDeclaration");
 	}
 
 	@Override
 	public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-		System.out.println("exitLocalVariableDeclaration");
 	}*/
 
 	@Override
 	public void enterPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
-		System.out.println(ctx.getText());
+		tokens.add(ctx.getText());
 	}
 	/*
 	@Override
 	public void exitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
-		System.out.println("exitPrimitiveType");
-	}*/
-	/*
-	@Override
-	public void enterStatement(JavaParser.StatementContext ctx) {
-		System.out.println("enterStatement");
 	}*/
 	
-	/*
+	@Override
+	public void enterStatement(JavaParser.StatementContext ctx) {
+        var parent = ctx.getParent();
+        if (ctx.getChildCount() != 1 && parent.getChildCount() > 2) {
+        if (parent.getChild(parent.getChildCount() - 2).getText().contentEquals("else"))
+            tokens.add("else");
+        }
+        
+		int index = 0;
+		for (int i = 0; i < ctx.getChildCount(); ++i) {
+			if (ctx.getChild(i).getChildCount() > 0) {
+				index = i;
+				break;
+			}
+		}
+		
+		for (int i = 0; i < index; ++i) {
+			tokens.add(ctx.getChild(i).getText());
+		}
+	}
+	
 	@Override
 	public void exitStatement(JavaParser.StatementContext ctx) {
-		System.out.println("exitStatement");
-	}*/
+	}
 	
 	/*
 	@Override
 	public void enterExpression(JavaParser.ExpressionContext ctx) {
-		System.out.println("enterExpression");
 	}*/
 
 	@Override
 	public void exitExpression(JavaParser.ExpressionContext ctx) {
 		if (ctx.equals(ctx.getParent().children.get(0))) {
-			for (ParseTree p : ctx.getParent().children) {
-				if (p.getChildCount() == 0) {
-					System.out.println(p.getText());
+			for (int i = 0; i < ctx.getParent().getChildCount(); ++i) {
+				if (ctx.getParent().getChild(i).getChildCount() == 0) {
+					tokens.add(ctx.getParent().getChild(i).getText());
 				}
 			}
 		}
@@ -269,47 +268,70 @@ public class JavaListener extends JavaParserBaseListener {
 	
 	@Override
 	public void enterPrimary(JavaParser.PrimaryContext ctx) {
-		if (ctx.getChild(0).getChildCount() == 0) {
-			System.out.println(ctx.getChild(0).getText());
+		if (ctx.getChild(0).getChildCount() == 0 || ctx.getChild(0).getChildCount() == 1) {
+			tokens.add(ctx.getChild(0).getText());
 		}
 	}
 
 	@Override
 	public void exitPrimary(JavaParser.PrimaryContext ctx) {
 		if (ctx.getChildCount() > 1 && ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
-			System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
+		}
+		if (ctx.getParent().getParent().getParent().getRuleIndex() == 38) {
+			tokens.add(",");
 		}
 	}
 
 	@Override
 	public void enterMethodCall(JavaParser.MethodCallContext ctx) {
-		System.out.println(ctx.getChild(0).getText());
-		System.out.println(ctx.getChild(1).getText());
+		tokens.add(ctx.getChild(0).getText());
+		tokens.add(ctx.getChild(1).getText());
 	}
 
 	@Override
 	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
-		System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+		tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
 	}
-
-	@Override
-	public void enterIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
-		System.out.println(ctx.getText());
-	}
-	/*
-	@Override
-	public void exitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
-		System.out.println("exitIntegerLiteral");
+	
+	/*@Override
+	public void enterForControl(JavaParser.ForControlContext ctx) {
 	}*/
-
+	
 	@Override
-	public void enterFloatLiteral(JavaParser.FloatLiteralContext ctx) {
-		System.out.println(ctx.getText());
+	public void exitForControl(JavaParser.ForControlContext ctx) {
+		tokens.add(")");
 	}
-	/*
-	@Override
-	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) { 
-		System.out.println("exitFloatLiteral");
-	}*/
+	
+	@Override 
+	public void enterEnhancedForControl(JavaParser.EnhancedForControlContext ctx) { }
 
+	@Override 
+	public void exitEnhancedForControl(JavaParser.EnhancedForControlContext ctx) { }
+	
+	@Override 
+	public void enterParExpression(JavaParser.ParExpressionContext ctx) {
+		tokens.add("(");
+	}
+
+	@Override 
+	public void exitParExpression(JavaParser.ParExpressionContext ctx) { 
+		tokens.add(")");
+	}
+	
+	public void enterForInit(JavaParser.ForInitContext ctx) {
+	}
+	
+	public void exitForInit(JavaParser.ForInitContext ctx) {
+	}
+	
+	@Override 
+	public void enterArrayInitializer(JavaParser.ArrayInitializerContext ctx) { 
+		tokens.add("{");
+	}
+	
+	@Override 
+	public void exitArrayInitializer(JavaParser.ArrayInitializerContext ctx) { 
+		tokens.add("}");
+	}
 }

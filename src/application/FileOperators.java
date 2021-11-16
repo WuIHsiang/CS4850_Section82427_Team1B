@@ -71,12 +71,14 @@ public class FileOperators {
 	}
 	
 	@SuppressWarnings("deprecation")
-	static public boolean translate(TextArea ta) {
+	static public boolean translate(TextArea ta, TextArea tc) {
 		boolean success = false;
 		
 		String content = ta.getText();
+		
+		String translation = "";
+		
 		StringBuilder sb = new StringBuilder();
-        //System.out.println("Java File:\n" + content + "\n\n");
         
         ANTLRInputStream input = new ANTLRInputStream(content);
         
@@ -94,11 +96,69 @@ public class FileOperators {
         
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         
-        //String s = translator.visitCompilationUnit(parser.compilationUnit());
-        //System.out.println(s);
-        //translator.visitCompilationUnit(tree);
+        int indent = 0;
+        translation +=("using System;\n");
         
-        //System.out.println("ParseTree:\n" + tree.toStringTree(parser) + "\n");
+        for (int i = 0; i < listener.tokens.size() - 1; i++) {
+        	
+        	translation +=(listener.tokens.get(i));
+        	if (!listener.tokens.get(i).contentEquals(";") 
+        			&& !listener.tokens.get(i).contentEquals(".") 
+        			&& !listener.tokens.get(i + 1).contentEquals(".")
+        			&& !listener.tokens.get(i).contentEquals("(")
+        			&& !listener.tokens.get(i + 1).contentEquals("(")
+        			&& !listener.tokens.get(i + 1).contentEquals(")")
+        			&& !listener.tokens.get(i + 1).contentEquals(";")) {
+        		translation +=(" ");
+        	}
+        	
+        	
+        	
+        	if (listener.tokens.get(i).contentEquals(";")) {
+        		translation +=("\n");
+        		if (!listener.tokens.get(i + 1).contentEquals("}")) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        		else {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        	}
+        	else if (listener.tokens.get(i).contentEquals("{")) {
+        		translation += ("\n");
+        		indent++;
+        		for (int y = 0; y < indent; y++) {
+        			translation += ("    ");
+        		}
+        	}
+        	else if (listener.tokens.get(i).contentEquals("}") && !listener.tokens.get(i+1).contentEquals(";")) {
+        		translation += ("\n");
+        		indent--;
+        		if (!listener.tokens.get(i + 1).contentEquals("}")) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        		else {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += ("    ");
+            		}
+        		}
+        	}
+        }
+        
+        translation += (listener.tokens.get(listener.tokens.size() - 1));
+        
+        translation = translation.replace("System.out.println", "Console.WriteLine");
+        translation = translation.replace("main", "Main");
+        translation = translation.replace(", }", "}");
+        
+        tc.setText(translation);
+        
+        translation = "";
         
 		return success;
 	}
