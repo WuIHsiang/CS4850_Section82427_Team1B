@@ -96,10 +96,31 @@ public class FileOperators {
         
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         
-        int indent = 0;
+        int indent = 0, forDepth = 0;
+        boolean forLoop = false;
+        boolean arrayInit = false;
         translation +=("using System;\n");
         
         for (int i = 0; i < listener.tokens.size() - 1; i++) {
+        	if (listener.tokens.get(i).contentEquals("for")) {
+        		forLoop = true;
+        	}
+        	if (listener.tokens.get(i).contentEquals("(") && forLoop) {
+        		forDepth++;
+        	}
+        	else if (listener.tokens.get(i).contentEquals(")") && forLoop) {
+        		forDepth--;
+        		if (forDepth == 0) {
+        			forLoop = false;
+        		}
+        	}
+        	
+        	if (listener.tokens.get(i).contentEquals("=") && listener.tokens.get(i + 1).contentEquals("{")) {
+        		arrayInit = true;
+        	}
+        	if (listener.tokens.get(i).contentEquals("}") && arrayInit) {
+        		arrayInit = false;
+        	}
         	
         	translation +=(listener.tokens.get(i));
         	if (!listener.tokens.get(i).contentEquals(";") 
@@ -115,26 +136,38 @@ public class FileOperators {
         	
         	
         	if (listener.tokens.get(i).contentEquals(";")) {
-        		translation +=("\n");
-        		if (!listener.tokens.get(i + 1).contentEquals("}")) {
+        		if (!forLoop) {
+        			translation +=("\n");
+        		}
+        		if (!listener.tokens.get(i + 1).contentEquals("}") && !forLoop) {
         			for (int y = 0; y < indent; y++) {
             			translation += ("    ");
             		}
         		}
-        		else {
+        		else if (!forLoop) {
         			for (int y = 0; y < indent - 1; y++) {
             			translation += ("    ");
             		}
         		}
+        		else if (!listener.tokens.get(i + 1).contentEquals("}") && forLoop) {
+        			for (int y = 0; y < indent; y++) {
+            			translation += (" ");
+            		}
+        		}
+        		else if (forLoop) {
+        			for (int y = 0; y < indent - 1; y++) {
+            			translation += (" ");
+            		}
+        		}
         	}
-        	else if (listener.tokens.get(i).contentEquals("{")) {
+        	else if (listener.tokens.get(i).contentEquals("{") && !arrayInit) {
         		translation += ("\n");
         		indent++;
         		for (int y = 0; y < indent; y++) {
         			translation += ("    ");
         		}
         	}
-        	else if (listener.tokens.get(i).contentEquals("}") && !listener.tokens.get(i+1).contentEquals(";")) {
+        	else if (listener.tokens.get(i).contentEquals("}") && !listener.tokens.get(i + 1).contentEquals(";")) {
         		translation += ("\n");
         		indent--;
         		if (!listener.tokens.get(i + 1).contentEquals("}")) {
@@ -154,7 +187,10 @@ public class FileOperators {
         
         translation = translation.replace("System.out.println", "Console.WriteLine");
         translation = translation.replace("main", "Main");
+        translation = translation.replace(".length()", ".Length");
+        translation = translation.replace(".charAt(i)", "[i]");
         translation = translation.replace(", }", "}");
+        translation = translation.replace("( ", "(");
         
         tc.setText(translation);
         
