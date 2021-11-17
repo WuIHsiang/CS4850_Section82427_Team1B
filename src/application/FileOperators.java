@@ -117,6 +117,7 @@ public class FileOperators {
         	
         	if (listener.tokens.get(i).contentEquals("=") && listener.tokens.get(i + 1).contentEquals("{")) {
         		arrayInit = true;
+        		
         	}
         	if (listener.tokens.get(i).contentEquals("}") && arrayInit) {
         		arrayInit = false;
@@ -184,8 +185,8 @@ public class FileOperators {
         }
         
         translation += (listener.tokens.get(listener.tokens.size() - 1));
-        translation = translation.replace("System.out.print", "Console.WriteLine");
         translation = translation.replace("System.out.println", "Console.WriteLine");
+        translation = translation.replace("System.out.print", "Console.WriteLine");
         translation = translation.replace("main", "Main");
         translation = translation.replace(".length()", ".Length");
         translation = translation.replace(".length", ".Length");
