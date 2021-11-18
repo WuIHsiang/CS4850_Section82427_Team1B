@@ -365,7 +365,10 @@ public class JavaListener extends JavaParserBaseListener {
 		if (ctx.getParent().getRuleIndex() == 77) {
 			tokens.add(";");
 		}
-		System.out.println("Bracket: "+ctx.getChild(0).getText());
+		if(ctx.getChild(0).getText().contains("[")) {
+			System.out.println("Bracket: "+ctx.getChild(0).getText());
+			System.out.println("Bracket: "+ctx.getParent().getRuleIndex());
+		}
 	}
 	
 	@Override

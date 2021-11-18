@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Scanner;
 
 import javafx.scene.control.TextArea;
@@ -88,7 +89,7 @@ public class FileOperators {
         
         antlr.JavaParser parser = new antlr.JavaParser(tokens);
         
-        antlr.JavaTranslator translator = new antlr.JavaTranslator();
+        //antlr.JavaTranslator translator = new antlr.JavaTranslator();
         
         antlr.JavaListener listener = new antlr.JavaListener();
         
@@ -99,6 +100,25 @@ public class FileOperators {
         int indent = 0, forDepth = 0;
         boolean forLoop = false;
         boolean arrayInit = false;
+        for(int i=0;i<listener.tokens.size();i++) {
+        	if((listener.tokens.get(i).contentEquals("=")
+        			||listener.tokens.get(i).contentEquals("+")
+        			||listener.tokens.get(i).contentEquals("-")
+        			||listener.tokens.get(i).contentEquals("*")
+        			||listener.tokens.get(i).contentEquals("/")
+        			||listener.tokens.get(i).contentEquals(";"))
+        			&&listener.tokens.get(i-2).contentEquals("]")
+        			&&!listener.tokens.get(i-4).contentEquals("int")
+        			&&!listener.tokens.get(i-4).contentEquals("String")
+        			&&!listener.tokens.get(i-4).contentEquals("double")
+        			&&!listener.tokens.get(i-4).contentEquals("float")
+        			&&!listener.tokens.get(i-4).contentEquals("boolean")
+        			&&!listener.tokens.get(i-4).contentEquals("short")
+        			&&!listener.tokens.get(i-4).contentEquals("long")
+        			&&!listener.tokens.get(i-4).contentEquals("char")) {
+        		Collections.swap(listener.tokens,i-2 , i-1);
+        	}
+        }
         translation +=("using System;\n");
         
         for (int i = 0; i < listener.tokens.size() - 1; i++) {
@@ -204,7 +224,7 @@ public class FileOperators {
         translation = translation.replaceAll("=.*nextByte().*;","= byte.Parse(Console.ReadLine());");
         
         tc.setText(translation);
-        
+        System.out.println(listener.tokens);
         translation = "";
         
 		return success;
