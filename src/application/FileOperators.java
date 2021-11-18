@@ -106,7 +106,8 @@ public class FileOperators {
         			||listener.tokens.get(i).contentEquals("-")
         			||listener.tokens.get(i).contentEquals("*")
         			||listener.tokens.get(i).contentEquals("/")
-        			||listener.tokens.get(i).contentEquals(";"))
+        			||listener.tokens.get(i).contentEquals(";")
+        			||listener.tokens.get(i).contentEquals(")"))
         			&&listener.tokens.get(i-2).contentEquals("]")
         			&&!listener.tokens.get(i-4).contentEquals("int")
         			&&!listener.tokens.get(i-4).contentEquals("String")
@@ -117,6 +118,9 @@ public class FileOperators {
         			&&!listener.tokens.get(i-4).contentEquals("long")
         			&&!listener.tokens.get(i-4).contentEquals("char")) {
         		Collections.swap(listener.tokens,i-2 , i-1);
+        	}if(listener.tokens.get(i).contentEquals(",")&&
+        			listener.tokens.get(i+1).contentEquals("}")) {
+        		listener.tokens.remove(i);
         	}
         }
         translation +=("using System;\n");
