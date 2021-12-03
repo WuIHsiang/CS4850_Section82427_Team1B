@@ -249,6 +249,7 @@ public class JavaListener extends JavaParserBaseListener {
 		tokens.add(ctx.getChild(1).getText());
 		if(ctx.getChild(2).getText().contains("new")) {
 			tokens.add(ctx.getChild(2).getText().replaceAll("new.*", "new "));
+			System.out.println("Child1: "+ctx.getChild(2).getText());
 			if(!ctx.getChild(2).getText().contains("int")&&
 					!ctx.getChild(2).getText().contains("String")&&
 					!ctx.getChild(2).getText().contains("double")&&
@@ -262,9 +263,7 @@ public class JavaListener extends JavaParserBaseListener {
 		System.out.println("Before Constructor: "+ctx.getChild(0).getText());
 		System.out.println("Child: "+ctx.getChild(2).getText());
 		
-		//if(ctx.getParent().getRuleIndex()==26) {
-		//	tokens.add(";");
-		//}
+		
 	}
 	
 	@Override
@@ -356,7 +355,6 @@ public class JavaListener extends JavaParserBaseListener {
 			for (int i = 0; i < ctx.getParent().getChildCount(); ++i) {
 				if (ctx.getParent().getChild(i).getChildCount() == 0&&ctx.getParent().getParent().getRuleIndex()!=89&&
 						ctx.getParent().getParent().getParent().getRuleIndex()!=93) {
-					System.out.println(ctx.getParent().getParent().getParent().getRuleIndex());
 					tokens.add(ctx.getParent().getChild(i).getText());
 					System.out.println("Random 1st index: "+ctx.getParent().getChild(0).getText());
 				}
@@ -367,7 +365,6 @@ public class JavaListener extends JavaParserBaseListener {
 		}
 		if(ctx.getChild(0).getText().contains("[")) {
 			System.out.println("Bracket: "+ctx.getChild(0).getText());
-			System.out.println("Bracket: "+ctx.getParent().getRuleIndex());
 		}
 	}
 	
@@ -441,11 +438,20 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override 
 	public void enterArrayCreatorRest(JavaParser.ArrayCreatorRestContext ctx) { 
 		if (ctx.getChild(0).getChildCount() == 0) {
-			tokens.add(ctx.getChild(0).getText());
+			tokens.add(ctx.getText());
+			/*tokens.add(ctx.getChild(0).getText());
 			tokens.add(ctx.getChild(1).getText());
 			tokens.add(ctx.getChild(2).getText());
-			System.out.println(ctx.getChild(0).getText());
-			System.out.println(ctx.getChild(2).getText());
+			System.out.println("Bracket 1: "+ctx.getChild(0).getText());
+			System.out.println("int 1: "+ctx.getChild(1).getText());
+			System.out.println("Bracket 2: "+ctx.getChild(2).getText());
+			tokens.add(ctx.getChild(3).getText());
+			tokens.add(ctx.getChild(4).getText());
+			tokens.add(ctx.getChild(5).getText());
+			System.out.println("Bracket 3: "+ctx.getChild(3).getText());
+			System.out.println("int 1: "+ctx.getChild(4).getText());
+			System.out.println("Bracket 4: "+ctx.getChild(5).getText());*/
+			
 		}
 	}
 	

@@ -121,6 +121,29 @@ public class FileOperators {
         	}if(listener.tokens.get(i).contentEquals(",")&&
         			listener.tokens.get(i+1).contentEquals("}")) {
         		listener.tokens.remove(i);
+        	}if(listener.tokens.get(i).contentEquals("]")
+        			&&listener.tokens.get(i+3).contentEquals("length")) {
+        		Collections.swap(listener.tokens,i,i+1);
+        	}if(listener.tokens.get(i).contentEquals("]")
+        			&&listener.tokens.get(i+2).contentEquals("[")) {
+        		Collections.swap(listener.tokens,i,i+1);
+        	}if(listener.tokens.get(i).contentEquals("=")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&listener.tokens.get(i-3).contentEquals("[")
+        			&&listener.tokens.get(i-6).contentEquals("int")) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}if(listener.tokens.get(i).contentEquals("length")
+        			&&listener.tokens.get(i+4).contentEquals(")")
+        			&&listener.tokens.get(i+20).contentEquals("length")) {
+        		listener.tokens.set(i,"GetLength(0)");
+        	}
+        	if(listener.tokens.get(i).contentEquals("length")
+        			&&listener.tokens.get(i-1).contentEquals(".")
+        			&&listener.tokens.get(i-2).contentEquals("]")) {
+        		listener.tokens.set(i, "GetLength(1)");
+        		listener.tokens.remove(i-2);
+        		listener.tokens.remove(i-3);
+        		listener.tokens.remove(i-4);
         	}
         }
         translation +=("using System;\n");
@@ -226,6 +249,8 @@ public class FileOperators {
         translation = translation.replaceAll("boolean","bool");
         translation = translation.replaceAll("=.*nextBoolean().*;","= bool.Parse(Console.ReadLine());");
         translation = translation.replaceAll("=.*nextByte().*;","= byte.Parse(Console.ReadLine());");
+        translation = translation.replaceAll("\\] \\[",",");
+        translation = translation.replaceAll("\\]\\[",",");
         
         tc.setText(translation);
         System.out.println(listener.tokens);
