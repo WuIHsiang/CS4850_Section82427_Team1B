@@ -36,7 +36,7 @@ public class JavaListener extends JavaParserBaseListener {
 	
 	@Override
 	public void enterClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-		tokens.add(ctx.getText());
+		tokens.add(ctx.getText().replace("<String>", ""));
 	}
 
 	@Override
@@ -246,22 +246,25 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void enterVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
 		tokens.add(ctx.getChild(0).getText());
-		tokens.add(ctx.getChild(1).getText());
-		if(ctx.getChild(2).getText().contains("new")) {
-			tokens.add(ctx.getChild(2).getText().replaceAll("new.*", "new "));
-			System.out.println("Child1: "+ctx.getChild(2).getText());
-			if(!ctx.getChild(2).getText().contains("int")&&
-					!ctx.getChild(2).getText().contains("String")&&
-					!ctx.getChild(2).getText().contains("double")&&
-					!ctx.getChild(2).getText().contains("float")&&
-					!ctx.getChild(2).getText().contains("char")&&
-					!ctx.getChild(2).getText().contains("long")&&
-					!ctx.getChild(2).getText().contains("short")) {
-						tokens.add(ctx.getChild(2).getText().replace("new", ""));
+		if(ctx.getChild(1)!=null) {
+			tokens.add(ctx.getChild(1).getText());
+		}
+		if(ctx.getChild(1)!=null) {
+			if(ctx.getChild(2).getText().contains("new")) {
+				tokens.add(ctx.getChild(2).getText().replaceAll("new.*", "new "));
+				System.out.println("Child1: "+ctx.getChild(2).getText());
+				if(!ctx.getChild(2).getText().contains("int")&&
+						!ctx.getChild(2).getText().contains("String")&&
+						!ctx.getChild(2).getText().contains("double")&&
+						!ctx.getChild(2).getText().contains("float")&&
+						!ctx.getChild(2).getText().contains("char")&&
+						!ctx.getChild(2).getText().contains("long")&&
+						!ctx.getChild(2).getText().contains("short")&&
+						!ctx.getChild(2).getText().contains("Node")) {
+							tokens.add(ctx.getChild(2).getText().replace("new", ""));
+				}
 			}
 		}
-		System.out.println("Before Constructor: "+ctx.getChild(0).getText());
-		System.out.println("Child: "+ctx.getChild(2).getText());
 		
 		
 	}
@@ -453,6 +456,22 @@ public class JavaListener extends JavaParserBaseListener {
 			System.out.println("Bracket 4: "+ctx.getChild(5).getText());*/
 			
 		}
+	}
+	@Override 
+	public void enterCreatedName(JavaParser.CreatedNameContext ctx) { 
+		if(ctx.getText().contains("ArrayList<")||ctx.getText().contains("LinkedList<")||ctx.getText().contains("HashMap<")||ctx.getText().contains("Set<")) {
+			tokens.add(ctx.getText().replace("<.*", ""));
+		}
+		/*
+		 public class Program{
+	public static void Main(string[]args){
+		ArrayList<String> thelist=new ArrayList<String>();
+		thelist.add("FirstElement");
+		thelist.add("SecondElement");
+		System.out.println(thelist);
+	}
+}
+		 */
 	}
 	
 	@Override 

@@ -139,7 +139,32 @@ public class FileOperators {
         			||listener.tokens.get(i-6).contentEquals("long")
         			||listener.tokens.get(i-6).contentEquals("char"))) {
         		Collections.swap(listener.tokens,i-2,i-1);
-        	}if(listener.tokens.get(i).contentEquals("=")
+        	}if(listener.tokens.get(i).contentEquals(")")
+        			&&listener.tokens.get(i+1).contentEquals("{")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&(listener.tokens.get(i-6).contentEquals("int")
+        			||listener.tokens.get(i-6).contentEquals("String")
+        			||listener.tokens.get(i-6).contentEquals("double")
+        			||listener.tokens.get(i-6).contentEquals("float")
+        			||listener.tokens.get(i-6).contentEquals("boolean")
+        			||listener.tokens.get(i-6).contentEquals("short")
+        			||listener.tokens.get(i-6).contentEquals("long")
+        			||listener.tokens.get(i-6).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}if(listener.tokens.get(i).contentEquals(")")
+        			&&listener.tokens.get(i+1).contentEquals("{")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&(listener.tokens.get(i-8).contentEquals("int")
+        			||listener.tokens.get(i-8).contentEquals("String")
+        			||listener.tokens.get(i-8).contentEquals("double")
+        			||listener.tokens.get(i-8).contentEquals("float")
+        			||listener.tokens.get(i-8).contentEquals("boolean")
+        			||listener.tokens.get(i-8).contentEquals("short")
+        			||listener.tokens.get(i-8).contentEquals("long")
+        			||listener.tokens.get(i-8).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}
+        	if(listener.tokens.get(i).contentEquals("=")
         			&&listener.tokens.get(i-1).contentEquals("]")
         			&&listener.tokens.get(i-3).contentEquals("[")
         			&&(listener.tokens.get(i-8).contentEquals("int")
