@@ -47,6 +47,15 @@ public class JavaListener extends JavaParserBaseListener {
 	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) { 
 		tokens.add(ctx.CLASS().toString());
 		tokens.add(ctx.IDENTIFIER().toString());
+		if(ctx.getText().contains("extends")) {
+			tokens.add(ctx.getText().replaceAll(".*extends.*", "extends"));
+		}if(ctx.getText().contains("implements")) {
+			tokens.add(ctx.getText().replaceAll(".*implements.*", "implements"));
+		}
+	}
+	public void enterInterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) { 
+		tokens.add(ctx.getChild(0).toString());
+		tokens.add(ctx.IDENTIFIER().toString());
 	}
 	public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) { 
 		tokens.add(ctx.getChild(0).getText().toString());
@@ -179,7 +188,7 @@ public class JavaListener extends JavaParserBaseListener {
 		}
 		
 		var parent = ctx.getParent();
-		if (parent.getRuleIndex() == 43 && parent.getChildCount() > 1 && parent.getChild(parent.getChildCount() - 1) != ctx)  {
+		if (parent.getChildCount() > 1 && parent.getChild(parent.getChildCount() - 1) != ctx)  {
 			tokens.add(",");
 		}
 	}

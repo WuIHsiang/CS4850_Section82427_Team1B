@@ -141,6 +141,7 @@ public class FileOperators {
         		Collections.swap(listener.tokens,i-2,i-1);
         	}if(listener.tokens.get(i).contentEquals(")")
         			&&listener.tokens.get(i+1).contentEquals("{")
+        			&&(i+1)<=listener.tokens.size()
         			&&listener.tokens.get(i-1).contentEquals("]")
         			&&(listener.tokens.get(i-6).contentEquals("int")
         			||listener.tokens.get(i-6).contentEquals("String")
@@ -305,6 +306,8 @@ public class FileOperators {
         translation = translation.replaceAll("=.*nextByte().*;","= byte.Parse(Console.ReadLine());");
         translation = translation.replaceAll("\\] \\[",",");
         translation = translation.replaceAll("\\]\\[",",");
+        translation = translation.replaceAll("extends",":");
+        translation = translation.replaceAll("implements",":");
         
         tc.setText(translation);
         System.out.println(listener.tokens);
