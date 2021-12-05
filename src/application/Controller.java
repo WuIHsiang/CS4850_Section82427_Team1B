@@ -8,8 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-
-public class Controller {
+public class Controller extends FileOperators {
 
     @FXML
     private MenuItem MenuOpenJavaFile;
@@ -109,7 +108,7 @@ public class Controller {
 
     @FXML
     void ButtonTranslateClicked(ActionEvent event) {
-    	boolean success = FileOperators.translate(TextAreaJava, TextAreaC);
+    	boolean success = FileOperators.translate(TextAreaJava,TextAreaC);
     	
     }
 

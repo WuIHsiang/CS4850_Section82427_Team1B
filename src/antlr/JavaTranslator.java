@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import javafx.scene.control.TextArea;
 //Currently on line 
-public class JavaTranslator extends antlr.JavaParserBaseVisitor<String> {	
+public class JavaTranslator extends antlr.JavaParserBaseVisitor<Void> {
 	/*public TypeVisitor parse(JavaParser parser) {
 		TypeVisitor typeVisitor = new TypeVisitor();
 		Type traverseResult = typeVisitor.visit(parser.compilationUnit());
@@ -30,15 +30,14 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<String> {
 		RULE_nonWildcardTypeArgumentsOrDiamond = 96, RULE_nonWildcardTypeArguments = 97, RULE_typeList = 98,   
 		RULE_typeArguments = 101, RULE_superSuffix = 102, RULE_explicitGenericInvocationSuffix = 103
 	 */
-		@Override
-		public String visitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
-			
-			System.out.println("A");
-			String compilationUnit;
-			
-			typeDeclarationVisitor TypeDeclarationVisitor=new typeDeclarationVisitor();
-			importDeclarationVisitor ImportDeclarationVisitor=new importDeclarationVisitor();
-			packageDeclarationVisitor PackageDeclarationVisitor=new packageDeclarationVisitor();
+	private static class compilationUnitVisitor extends JavaParserBaseVisitor<String>{
+		private String compilationUnit;
+		
+		typeDeclarationVisitor TypeDeclarationVisitor=new typeDeclarationVisitor();
+		importDeclarationVisitor ImportDeclarationVisitor=new importDeclarationVisitor();
+		packageDeclarationVisitor PackageDeclarationVisitor=new packageDeclarationVisitor();
+		
+		public String visitcompilationUnit(JavaParser.CompilationUnitContext ctx) {
 			if (ctx.getRuleIndex() == 3) {
 				TypeDeclarationVisitor.visittypeDeclaration(ctx.typeDeclaration(0));
 			}if (ctx.getRuleIndex() == 2) {
@@ -49,7 +48,7 @@ public class JavaTranslator extends antlr.JavaParserBaseVisitor<String> {
 				compilationUnit = ctx.getText();
 		return compilationUnit;
 		}
-		
+	}
 	private static class importDeclarationVisitor extends JavaParserBaseVisitor<String>{
 		private String importdeclaration;
 		

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Scanner;
 
 import javafx.scene.control.TextArea;
@@ -88,16 +89,126 @@ public class FileOperators {
         
         antlr.JavaParser parser = new antlr.JavaParser(tokens);
         
-        antlr.JavaTranslator translator = new antlr.JavaTranslator();
+        //antlr.JavaTranslator translator = new antlr.JavaTranslator();
         
         antlr.JavaListener listener = new antlr.JavaListener();
         
         ParseTree tree = parser.compilationUnit();
         
+        System.out.println(tree.toStringTree(parser));
         ParseTreeWalker.DEFAULT.walk(listener, tree);
-        
         int indent = 0, forDepth = 0;
         boolean forLoop = false;
+        boolean arrayInit = false;
+        for(int i=0;i<listener.tokens.size();i++) {
+        	if((listener.tokens.get(i).contentEquals("=")
+        			||listener.tokens.get(i).contentEquals("+")
+        			||listener.tokens.get(i).contentEquals("-")
+        			||listener.tokens.get(i).contentEquals("*")
+        			||listener.tokens.get(i).contentEquals("/")
+        			||listener.tokens.get(i).contentEquals(";")
+        			||listener.tokens.get(i).contentEquals(")"))
+        			&&listener.tokens.get(i-2).contentEquals("]")
+        			&&!listener.tokens.get(i-4).contentEquals("int")
+        			&&!listener.tokens.get(i-4).contentEquals("String")
+        			&&!listener.tokens.get(i-4).contentEquals("double")
+        			&&!listener.tokens.get(i-4).contentEquals("float")
+        			&&!listener.tokens.get(i-4).contentEquals("boolean")
+        			&&!listener.tokens.get(i-4).contentEquals("short")
+        			&&!listener.tokens.get(i-4).contentEquals("long")
+        			&&!listener.tokens.get(i-4).contentEquals("char")) {
+        		Collections.swap(listener.tokens,i-2 , i-1);
+        	}if(listener.tokens.get(i).contentEquals(",")&&
+        			listener.tokens.get(i+1).contentEquals("}")) {
+        		listener.tokens.remove(i);
+        	}if(listener.tokens.get(i).contentEquals("]")
+        			&&listener.tokens.get(i+3).contentEquals("length")) {
+        		Collections.swap(listener.tokens,i,i+1);
+        	}if(listener.tokens.get(i).contentEquals("]")
+        			&&listener.tokens.get(i+2).contentEquals("[")) {
+        		Collections.swap(listener.tokens,i,i+1);
+        	}if(listener.tokens.get(i).contentEquals("=")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&listener.tokens.get(i-3).contentEquals("[")
+        			&&(listener.tokens.get(i-6).contentEquals("int")
+        			||listener.tokens.get(i-6).contentEquals("String")
+        			||listener.tokens.get(i-6).contentEquals("double")
+        			||listener.tokens.get(i-6).contentEquals("float")
+        			||listener.tokens.get(i-6).contentEquals("boolean")
+        			||listener.tokens.get(i-6).contentEquals("short")
+        			||listener.tokens.get(i-6).contentEquals("long")
+        			||listener.tokens.get(i-6).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}if(listener.tokens.get(i).contentEquals("==")
+        			&&listener.tokens.get(i-2).contentEquals("]")
+        			&&listener.tokens.get(i-3).contentEquals("[")) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}if(listener.tokens.get(i).contentEquals(")")
+        			&&listener.tokens.get(i+1).contentEquals("{")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&(listener.tokens.get(i-6).contentEquals("int")
+        			||listener.tokens.get(i-6).contentEquals("String")
+        			||listener.tokens.get(i-6).contentEquals("double")
+        			||listener.tokens.get(i-6).contentEquals("float")
+        			||listener.tokens.get(i-6).contentEquals("boolean")
+        			||listener.tokens.get(i-6).contentEquals("short")
+        			||listener.tokens.get(i-6).contentEquals("long")
+        			||listener.tokens.get(i-6).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}if(listener.tokens.get(i).contentEquals("]")
+        			&&listener.tokens.get(i-3).contentEquals("(")
+        			&&listener.tokens.get(i+6).contentEquals("{")) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}
+        	if(listener.tokens.get(i).contentEquals(")")
+        			&&listener.tokens.get(i+1).contentEquals("{")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&(listener.tokens.get(i-8).contentEquals("int")
+        			||listener.tokens.get(i-8).contentEquals("String")
+        			||listener.tokens.get(i-8).contentEquals("double")
+        			||listener.tokens.get(i-8).contentEquals("float")
+        			||listener.tokens.get(i-8).contentEquals("boolean")
+        			||listener.tokens.get(i-8).contentEquals("short")
+        			||listener.tokens.get(i-8).contentEquals("long")
+        			||listener.tokens.get(i-8).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-2,i-1);
+        	}
+        	if(listener.tokens.get(i).contentEquals("=")
+        			&&listener.tokens.get(i-1).contentEquals("]")
+        			&&listener.tokens.get(i-3).contentEquals("[")
+        			&&(listener.tokens.get(i-8).contentEquals("int")
+        			||listener.tokens.get(i-8).contentEquals("String")
+        			||listener.tokens.get(i-8).contentEquals("double")
+        			||listener.tokens.get(i-8).contentEquals("float")
+        			||listener.tokens.get(i-8).contentEquals("boolean")
+        			||listener.tokens.get(i-8).contentEquals("short")
+        			||listener.tokens.get(i-8).contentEquals("long")
+        			||listener.tokens.get(i-8).contentEquals("char"))) {
+        		Collections.swap(listener.tokens,i-1,i-2);
+        	}if(listener.tokens.get(i).contentEquals("length")
+        			&&listener.tokens.get(i-1).contentEquals(".")
+        			&&listener.tokens.get(i-2).contentEquals("]")
+        			&&listener.tokens.get(i-20).contentEquals("GetLength(1)")) {
+        		listener.tokens.set(i, "GetLength(2)");
+        		listener.tokens.remove(i-2);
+        		listener.tokens.remove(i-3);
+        		listener.tokens.remove(i-4);
+        	}if(listener.tokens.get(i).contentEquals("length")
+        			&&listener.tokens.get(i-1).contentEquals(".")
+        			&&listener.tokens.get(i-2).contentEquals("]")
+        			&&listener.tokens.get(i-20).contentEquals("GetLength(0)")) {
+        		listener.tokens.set(i, "GetLength(1)");
+        		listener.tokens.remove(i-2);
+        		listener.tokens.remove(i-3);
+        		listener.tokens.remove(i-4);
+        	}if(listener.tokens.get(i).contentEquals("length")
+        			&&listener.tokens.get(i+4).contentEquals(")")
+        			&&listener.tokens.get(i+20).contentEquals("length")) {
+        		listener.tokens.set(i,"GetLength(0)");
+        	}
+        	
+        		
+        }
         translation +=("using System;\n");
         
         for (int i = 0; i < listener.tokens.size() - 1; i++) {
@@ -112,6 +223,14 @@ public class FileOperators {
         		if (forDepth == 0) {
         			forLoop = false;
         		}
+        	}
+        	
+        	if (listener.tokens.get(i).contentEquals("=") && listener.tokens.get(i + 1).contentEquals("{")) {
+        		arrayInit = true;
+        		
+        	}
+        	if (listener.tokens.get(i).contentEquals("}") && arrayInit) {
+        		arrayInit = false;
         	}
         	
         	translation +=(listener.tokens.get(i));
@@ -152,14 +271,14 @@ public class FileOperators {
             		}
         		}
         	}
-        	else if (listener.tokens.get(i).contentEquals("{")) {
+        	else if (listener.tokens.get(i).contentEquals("{") && !arrayInit) {
         		translation += ("\n");
         		indent++;
         		for (int y = 0; y < indent; y++) {
         			translation += ("    ");
         		}
         	}
-        	else if (listener.tokens.get(i).contentEquals("}")) {
+        	else if (listener.tokens.get(i).contentEquals("}") && !listener.tokens.get(i + 1).contentEquals(";")) {
         		translation += ("\n");
         		indent--;
         		if (!listener.tokens.get(i + 1).contentEquals("}")) {
@@ -176,14 +295,30 @@ public class FileOperators {
         }
         
         translation += (listener.tokens.get(listener.tokens.size() - 1));
-        
         translation = translation.replace("System.out.println", "Console.WriteLine");
+        translation = translation.replace("System.out.print", "Console.WriteLine");
         translation = translation.replace("main", "Main");
         translation = translation.replace(".length()", ".Length");
+        translation = translation.replace(".length", ".Length");
         translation = translation.replace(".charAt(i)", "[i]");
+        translation = translation.replaceAll("Scanner.*.*;","");
+        translation = translation.replaceAll("=.*nextInt().*;","= Convert.ToInt32(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextLine().*;","= Console.ReadLine();");
+        translation = translation.replaceAll("=.*nextDouble().*;","= Convert.ToDouble(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextFloat().*;","= float.Parse(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextChar().*;","= Console.ReadLine()[0];");
+        translation = translation.replaceAll("=.*nextShort().*;","= (short)Convert.ToInt32(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextLong().*;","= (long)Convert.ToInt32(Console.ReadLine());");
+        translation = translation.replaceAll("boolean","bool");
+        translation = translation.replaceAll("=.*nextBoolean().*;","= bool.Parse(Console.ReadLine());");
+        translation = translation.replaceAll("=.*nextByte().*;","= byte.Parse(Console.ReadLine());");
+        translation = translation.replaceAll("\\] \\[",",");
+        translation = translation.replaceAll("\\]\\[",",");
+        translation = translation.replaceAll("extends",":");
+        translation = translation.replaceAll("implements",":");
         
         tc.setText(translation);
-        
+        System.out.println(listener.tokens);
         translation = "";
         
 		return success;
