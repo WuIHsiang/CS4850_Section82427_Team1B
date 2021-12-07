@@ -95,7 +95,6 @@ public class FileOperators {
         
         ParseTree tree = parser.compilationUnit();
         
-        System.out.println(tree.toStringTree(parser));
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         int indent = 0, forDepth = 0;
         boolean forLoop = false;
@@ -121,6 +120,9 @@ public class FileOperators {
         	}if(listener.tokens.get(i).contentEquals(",")&&
         			listener.tokens.get(i+1).contentEquals("}")) {
         		listener.tokens.remove(i);
+        	}if(listener.tokens.get(i).contentEquals(",")&&
+        			listener.tokens.get(i+1).contentEquals(";")) {
+        		listener.tokens.remove(i);
         	}if(listener.tokens.get(i).contentEquals("]")
         			&&listener.tokens.get(i+3).contentEquals("length")) {
         		Collections.swap(listener.tokens,i,i+1);
@@ -143,7 +145,8 @@ public class FileOperators {
         			&&listener.tokens.get(i-2).contentEquals("]")
         			&&listener.tokens.get(i-3).contentEquals("[")) {
         		Collections.swap(listener.tokens,i-2,i-1);
-        	}if(listener.tokens.get(i).contentEquals(")")
+        	}if(listener.tokens.get(i).contentEquals(")")&&
+        			!listener.tokens.contains("interface")
         			&&listener.tokens.get(i+1).contentEquals("{")
         			&&listener.tokens.get(i-1).contentEquals("]")
         			&&(listener.tokens.get(i-6).contentEquals("int")
@@ -160,7 +163,8 @@ public class FileOperators {
         			&&listener.tokens.get(i+6).contentEquals("{")) {
         		Collections.swap(listener.tokens,i-2,i-1);
         	}
-        	if(listener.tokens.get(i).contentEquals(")")
+        	if(listener.tokens.get(i).contentEquals(")")&&
+        			!listener.tokens.contains("interface")
         			&&listener.tokens.get(i+1).contentEquals("{")
         			&&listener.tokens.get(i-1).contentEquals("]")
         			&&(listener.tokens.get(i-8).contentEquals("int")
@@ -205,6 +209,14 @@ public class FileOperators {
         			&&listener.tokens.get(i+4).contentEquals(")")
         			&&listener.tokens.get(i+20).contentEquals("length")) {
         		listener.tokens.set(i,"GetLength(0)");
+        	}if(listener.tokens.get(i).contentEquals("interface")) {
+        		listener.tokens.add(i+2,"{");
+        		listener.tokens.add(listener.tokens.size(),"}");
+        	}
+        	if(listener.tokens.contains("interface")
+        			&&listener.tokens.get(i).contentEquals(")")) {
+        		listener.tokens.add(i+1,";");
+        		
         	}
         	
         		
@@ -316,9 +328,32 @@ public class FileOperators {
         translation = translation.replaceAll("\\]\\[",",");
         translation = translation.replaceAll("extends",":");
         translation = translation.replaceAll("implements",":");
-        
+        translation = translation.replaceAll("ArrayList<String>;","ArrayList();");
+        translation = translation.replaceAll("ArrayList<String>","ArrayList");
+        translation = translation.replaceAll("ArrayList<Integer>;","ArrayList();");
+        translation = translation.replaceAll("ArrayList<Integer>","ArrayList");
+        translation = translation.replaceAll("Stack<String>;","Stack();");
+        translation = translation.replaceAll("Stack<String>","Stack");
+        translation = translation.replaceAll("Stack<Integer>;","Stack();");
+        translation = translation.replaceAll("Stack<Integer>","Stack");
+        translation = translation.replaceAll("List<Integer>;","List<Integer>();");
+        translation = translation.replaceAll("List<String>;","List<String>();");
+        translation = translation.replaceAll("LinkedList<String>;",";");
+        translation = translation.replaceAll("LinkedList<Integer>;",";");
+        translation = translation.replaceAll("<Integer>","<int>");
+        translation = translation.replaceAll("<String>","<string>");
+        translation = translation.replaceAll("import  java.util.ArrayList;","using System.Collections;");
+        translation = translation.replaceAll("import  java.util.LinkedList;","using System.Collections.Generic;");
+        translation = translation.replaceAll("import  java.util.Stack;","using System.Collections;");
+        translation = translation.replaceAll("import  java.util.List;","using System.Collections.Generic;");
+        translation = translation.replaceAll(".add",".Add");
+        translation = translation.replaceAll(".remove",".Remove");
+        translation = translation.replaceAll(".enqueue",".Enqueue");
+        translation = translation.replaceAll(".dequeue",".Dequeue");
+        translation = translation.replaceAll(".push",".Push");
+        translation = translation.replaceAll(".pop",".Pop");
+        translation = translation.replaceAll("import.*","");
         tc.setText(translation);
-        System.out.println(listener.tokens);
         translation = "";
         
 		return success;
