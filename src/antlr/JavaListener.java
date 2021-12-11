@@ -111,8 +111,8 @@ public class JavaListener extends JavaParserBaseListener {
 	}*/
 	@Override
 	public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) { 
-		System.out.println("Member: "+ctx.getChild(0).getText());
-		System.out.println("Rule number: "+ctx.getRuleIndex());
+		//System.out.println("Member: "+ctx.getChild(0).getText());
+		//System.out.println("Rule number: "+ctx.getRuleIndex());
 		
 		
 		
@@ -123,7 +123,7 @@ public class JavaListener extends JavaParserBaseListener {
 			tokens.add(ctx.getChild(0).getText());
 			if (ctx.getChild(1).getChildCount() == 0) {
 				tokens.add(ctx.getChild(1).getText());
-				System.out.println("Members: "+ctx.getChild(1).getText());
+				//System.out.println("Members: "+ctx.getChild(1).getText());
 			}
 		}
 	}
@@ -156,7 +156,7 @@ public class JavaListener extends JavaParserBaseListener {
 		if (ctx.getChild(0).getChildCount() == 0) {
 			tokens.add(ctx.getChild(0).getText());
 		}
-		System.out.println("Parameters: "+ctx.getChild(0).getText());
+		//System.out.println("Parameters: "+ctx.getChild(0).getText());
 	}
 	
 	@Override
@@ -235,7 +235,7 @@ public class JavaListener extends JavaParserBaseListener {
 		for (ParseTree p : ctx.children) {
 			if (p.getChildCount() == 0) {
 				tokens.add(p.getText());
-				System.out.println(p.getText());
+				//System.out.println(p.getText());
 			}
 		}
 		var parent = ctx.getParent();
@@ -261,7 +261,7 @@ public class JavaListener extends JavaParserBaseListener {
 		if(ctx.getChild(1)!=null) {
 			if(ctx.getChild(2).getText().contains("new")) {
 				tokens.add(ctx.getChild(2).getText().replaceAll("new.*", "new "));
-				System.out.println("Child1: "+ctx.getChild(2).getText());
+				//System.out.println("Child1: "+ctx.getChild(2).getText());
 				if(!ctx.getChild(2).getText().contains("int")&&
 						!ctx.getChild(2).getText().contains("String")&&
 						!ctx.getChild(2).getText().contains("double")&&
@@ -280,7 +280,7 @@ public class JavaListener extends JavaParserBaseListener {
 	
 	@Override
 	public void exitVariableDeclarators(JavaParser.VariableDeclaratorsContext ctx) { 
-		System.out.println("Variable Declarators rule index: "+ctx.getParent().getRuleIndex());
+		//System.out.println("Variable Declarators rule index: "+ctx.getParent().getRuleIndex());
 		if(ctx.getParent().getRuleIndex()==26) {
 			tokens.add(";");
 		}
@@ -297,7 +297,7 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void enterPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
 		tokens.add(ctx.getText());
-		System.out.println("Variable Type: "+ctx.getText());
+		//System.out.println("Variable Type: "+ctx.getText());
 	}
 	/*
 	@Override
@@ -368,7 +368,7 @@ public class JavaListener extends JavaParserBaseListener {
 				if (ctx.getParent().getChild(i).getChildCount() == 0&&ctx.getParent().getParent().getRuleIndex()!=89&&
 						ctx.getParent().getParent().getParent().getRuleIndex()!=93) {
 					tokens.add(ctx.getParent().getChild(i).getText());
-					System.out.println("Random 1st index: "+ctx.getParent().getChild(0).getText());
+					//System.out.println("Random 1st index: "+ctx.getParent().getChild(0).getText());
 				}
 			}
 		}
@@ -376,7 +376,7 @@ public class JavaListener extends JavaParserBaseListener {
 			tokens.add(";");
 		}
 		if(ctx.getChild(0).getText().contains("[")) {
-			System.out.println("Bracket: "+ctx.getChild(0).getText());
+			//System.out.println("Bracket: "+ctx.getChild(0).getText());
 		}
 	}
 	
@@ -386,7 +386,7 @@ public class JavaListener extends JavaParserBaseListener {
 				&&ctx.getParent().getParent().getParent().getRuleIndex()!=89&&
 				ctx.getParent().getParent().getParent().getParent().getRuleIndex()!=93) {
 			tokens.add(ctx.getChild(0).getText());
-			System.out.println("Literal: "+ctx.getText());
+			//System.out.println("Literal: "+ctx.getText());
 		}
 		
 	}
@@ -395,7 +395,7 @@ public class JavaListener extends JavaParserBaseListener {
 	public void exitPrimary(JavaParser.PrimaryContext ctx) {
 		if (ctx.getChildCount() > 1 && ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
 			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
-			System.out.println("Literal: "+ctx.getChild(ctx.getChildCount() - 1).getText());
+			//System.out.println("Literal: "+ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
 		if (ctx.getParent().getParent().getParent().getRuleIndex() == 38) {
 			tokens.add(",");
@@ -495,6 +495,6 @@ public class JavaListener extends JavaParserBaseListener {
 		if (ctx.getChild(ctx.getChildCount() - 1).getChildCount() == 0) {
 			tokens.add(ctx.getChild(ctx.getChildCount() - 1).getText());
 		}
-		System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
+		//System.out.println(ctx.getChild(ctx.getChildCount() - 1).getText());
 	}
 }

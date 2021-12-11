@@ -95,7 +95,7 @@ public class FileOperators {
         
         ParseTree tree = parser.compilationUnit();
         
-        System.out.println(tree.toStringTree(parser));
+        //System.out.println(tree.toStringTree(parser));
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         int indent = 0, forDepth = 0;
         boolean forLoop = false;
@@ -318,7 +318,7 @@ public class FileOperators {
         translation = translation.replaceAll("implements",":");
         
         tc.setText(translation);
-        System.out.println(listener.tokens);
+        //System.out.println(listener.tokens);
         translation = "";
         
 		return success;
