@@ -318,7 +318,6 @@ public class FileOperators {
         translation = translation.replaceAll("implements",":");
         
         tc.setText(translation);
-        //System.out.println(listener.tokens);
         translation = "";
         
 		return success;
